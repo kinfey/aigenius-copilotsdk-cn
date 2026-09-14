@@ -1,0 +1,1935 @@
+
+<!DOCTYPE html>
+
+<html class="no-js" lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<meta content="使用 GitHub Copilot SDK 建置零售分析助手，包括實作練習、程式碼導覽和參考資料。" name="description"/>
+<meta content="Vic Perdana" name="author"/>
+<link href="labs/" rel="next"/>
+<link href="assets/images/favicon.png" rel="icon"/>
+<meta content="mkdocs-1.6.1, mkdocs-material-9.7.7" name="generator"/>
+<title>AI Genius 第 5 季第 2 集 — Agent HQ Demo</title>
+<link href="assets/stylesheets/main.ec1eaa64.min.css" rel="stylesheet"/>
+<link href="assets/stylesheets/palette.ab4e12ef.min.css" rel="stylesheet"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&amp;display=fallback" rel="stylesheet"/>
+<style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+<script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+</head>
+<body data-md-color-accent="indigo" data-md-color-primary="indigo" data-md-color-scheme="default" dir="ltr">
+<input autocomplete="off" class="md-toggle" data-md-toggle="drawer" id="__drawer" type="checkbox"/>
+<input autocomplete="off" class="md-toggle" data-md-toggle="search" id="__search" type="checkbox"/>
+<label class="md-overlay" for="__drawer"></label>
+<div data-md-component="skip">
+<a class="md-skip" href="#ai-genius-season-5-episode-2">
+          跳至主要內容
+        </a>
+</div>
+<div data-md-component="announce">
+</div>
+<header class="md-header" data-md-component="header">
+<nav aria-label="頁首" class="md-header__inner md-grid">
+<a aria-label="AI Genius 第 5 季第 2 集 — Agent HQ Demo" class="md-header__button md-logo" data-md-component="logo" href="." title="AI Genius 第 5 季第 2 集 — Agent HQ Demo">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"></path></svg>
+</a>
+<label class="md-header__button md-icon" for="__drawer">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"></path></svg>
+</label>
+<div class="md-header__title" data-md-component="header-title">
+<div class="md-header__ellipsis">
+<div class="md-header__topic">
+<span class="md-ellipsis">
+            AI Genius 第 5 季第 2 集 — Agent HQ Demo
+          </span>
+</div>
+<div class="md-header__topic" data-md-component="header-topic">
+<span class="md-ellipsis">
+            
+              首頁
+            
+          </span>
+</div>
+</div>
+</div>
+<form class="md-header__option" data-md-component="palette">
+<input aria-label="切換到淺色模式" class="md-option" data-md-color-accent="indigo" data-md-color-media="(prefers-color-scheme)" data-md-color-primary="indigo" data-md-color-scheme="default" id="__palette_0" name="__palette" type="radio"/>
+<label class="md-header__button md-icon" for="__palette_1" hidden="" title="切換到淺色模式">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m14.3 16-.7-2h-3.2l-.7 2H7.8L11 7h2l3.2 9zM20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12zm-9.15 3.96h2.3L12 9z"></path></svg>
+</label>
+<input aria-label="切換到深色模式" class="md-option" data-md-color-accent="indigo" data-md-color-media="(prefers-color-scheme: light)" data-md-color-primary="indigo" data-md-color-scheme="default" id="__palette_1" name="__palette" type="radio"/>
+<label class="md-header__button md-icon" for="__palette_2" hidden="" title="切換到深色模式">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"></path></svg>
+</label>
+<input aria-label="跟隨系統偏好設定" class="md-option" data-md-color-accent="indigo" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-primary="indigo" data-md-color-scheme="slate" id="__palette_2" name="__palette" type="radio"/>
+<label class="md-header__button md-icon" for="__palette_0" hidden="" title="跟隨系統偏好設定">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"></path></svg>
+</label>
+</form>
+<script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+<label class="md-header__button md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+</label>
+<div class="md-search" data-md-component="search" role="dialog">
+<label class="md-search__overlay" for="__search"></label>
+<div class="md-search__inner" role="search">
+<form class="md-search__form" name="search">
+<input aria-label="搜尋" autocapitalize="off" autocomplete="off" autocorrect="off" class="md-search__input" data-md-component="search-query" name="query" placeholder="搜尋" required="" spellcheck="false" type="text"/>
+<label class="md-search__icon md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
+</label>
+<nav aria-label="搜尋" class="md-search__options">
+<button aria-label="清除" class="md-search__icon md-icon" tabindex="-1" title="清除" type="reset">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg>
+</button>
+</nav>
+<div class="md-search__suggest" data-md-component="search-suggest"></div>
+</form>
+<div class="md-search__output">
+<div class="md-search__scrollwrap" data-md-scrollfix="" tabindex="0">
+<div class="md-search-result" data-md-component="search-result">
+<div class="md-search-result__meta">
+            正在初始化搜尋
+          </div>
+<ol class="md-search-result__list" role="presentation"></ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="md-header__source">
+<a class="md-source" data-md-component="source" href="https://github.com/vicperdana/aigenius-copilotsdk-s5ep2" title="轉到儲存庫">
+<div class="md-source__icon md-icon">
+<svg viewbox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"></path></svg>
+</div>
+<div class="md-source__repository">
+    vicperdana/aigenius-copilotsdk-s5ep2
+  </div>
+</a>
+</div>
+</nav>
+</header>
+<div class="md-container" data-md-component="container">
+<nav aria-label="選項卡" class="md-tabs" data-md-component="tabs">
+<div class="md-grid">
+<ul class="md-tabs__list">
+<li class="md-tabs__item md-tabs__item--active">
+<a class="md-tabs__link" href=".">
+        
+  
+  
+    
+  
+  首頁
+
+      </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="labs/">
+          
+  
+  
+    
+  
+  .NET
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="labs-python/">
+          
+  
+  
+    
+  
+  Python
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="breakouts/">
+          
+  
+  
+    
+  
+  專題
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="system-map/">
+          
+  
+  
+    
+  
+  系統架構圖
+
+        </a>
+</li>
+</ul>
+</div>
+</nav>
+<main class="md-main" data-md-component="main">
+<div class="md-main__inner md-grid">
+<div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="導航" class="md-nav md-nav--primary md-nav--lifted" data-md-level="0">
+<label class="md-nav__title" for="__drawer">
+<a aria-label="AI Genius 第 5 季第 2 集 — Agent HQ Demo" class="md-nav__button md-logo" data-md-component="logo" href="." title="AI Genius 第 5 季第 2 集 — Agent HQ Demo">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"></path></svg>
+</a>
+    AI Genius 第 5 季第 2 集 — Agent HQ Demo
+  </label>
+<div class="md-nav__source">
+<a class="md-source" data-md-component="source" href="https://github.com/vicperdana/aigenius-copilotsdk-s5ep2" title="轉到儲存庫">
+<div class="md-source__icon md-icon">
+<svg viewbox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"></path></svg>
+</div>
+<div class="md-source__repository">
+    vicperdana/aigenius-copilotsdk-s5ep2
+  </div>
+</a>
+</div>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item md-nav__item--active">
+<input class="md-nav__toggle md-toggle" id="__toc" type="checkbox"/>
+<label class="md-nav__link md-nav__link--active" for="__toc">
+<span class="md-ellipsis">
+    
+  
+    首頁
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<a class="md-nav__link md-nav__link--active" href=".">
+<span class="md-ellipsis">
+    
+  
+    首頁
+  
+
+    
+  </span>
+</a>
+<nav aria-label="目錄" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+      目錄
+    </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#agent-hq-building-a-retail-analytics-assistant-with-the-github-copilot-sdk">
+<span class="md-ellipsis">
+      
+        🔥 Agent HQ：使用 GitHub Copilot SDK 建置零售分析助手
+      
+    </span>
+</a>
+<nav aria-label="🔥 Agent HQ：使用 GitHub Copilot SDK 建置零售分析助手" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#session-description">
+<span class="md-ellipsis">
+      
+        課程說明
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#session-slides">
+<span class="md-ellipsis">
+      
+        課程投影片
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#learning-outcomes">
+<span class="md-ellipsis">
+      
+        🧠 學習成果
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#keep-learning-with-copilot">
+<span class="md-ellipsis">
+      
+        💬 使用 Copilot 持續學習
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#resources-and-next-steps">
+<span class="md-ellipsis">
+      
+        📚 資源與後續行動
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#microsoft-learn-mcp-server">
+<span class="md-ellipsis">
+      
+        🌟 Microsoft Learn MCP Server
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#what-this-demo-shows">
+<span class="md-ellipsis">
+      
+        ✨ 此示範展示的功能
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#tech-stack">
+<span class="md-ellipsis">
+      
+        🛠️ 技術堆疊
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#quick-start">
+<span class="md-ellipsis">
+      
+        🚀 快速開始
+      
+    </span>
+</a>
+<nav aria-label="🚀 快速開始" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#prerequisites">
+<span class="md-ellipsis">
+      
+        先決條件
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#run-it-net">
+<span class="md-ellipsis">
+      
+        執行專案 — .NET
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#run-it-python">
+<span class="md-ellipsis">
+      
+        執行專案 — Python
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#github-codespaces">
+<span class="md-ellipsis">
+      
+        GitHub Codespaces
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#copilot-cli-binary">
+<span class="md-ellipsis">
+      
+        Copilot CLI 二進位檔案
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#api-endpoints">
+<span class="md-ellipsis">
+      
+        📡 API 端點
+      
+    </span>
+</a>
+<nav aria-label="📡 API 端點" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#example-calls">
+<span class="md-ellipsis">
+      
+        呼叫範例
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#available-models">
+<span class="md-ellipsis">
+      
+        🎯 可用模型
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#architecture">
+<span class="md-ellipsis">
+      
+        🏗️ 架構
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#project-structure">
+<span class="md-ellipsis">
+      
+        📂 專案結構
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#seed-data">
+<span class="md-ellipsis">
+      
+        🗄️ 種子資料
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#custom-agents">
+<span class="md-ellipsis">
+      
+        🤖 自訂代理程式
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#demo-materials">
+<span class="md-ellipsis">
+      
+        📋 示範教材
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#security-notes">
+<span class="md-ellipsis">
+      
+        🔐 安全說明
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#contributing">
+<span class="md-ellipsis">
+      
+        🤝 參與貢獻
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#license">
+<span class="md-ellipsis">
+      
+        📄 授權條款
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_2" type="checkbox"/>
+<label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    .NET
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_2_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_2">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    .NET
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_2_1" type="checkbox"/>
+<div class="md-nav__link md-nav__container">
+<a class="md-nav__link" href="labs/">
+<span class="md-ellipsis">
+    
+  
+    實作
+  
+
+    
+  </span>
+</a>
+<label class="md-nav__link" for="__nav_2_1" id="__nav_2_1_label" tabindex="0">
+<span class="md-nav__icon md-icon"></span>
+</label>
+</div>
+<nav aria-expanded="false" aria-labelledby="__nav_2_1_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_2_1">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    實作
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="labs/01-setup/">
+<span class="md-ellipsis">
+    
+  
+    01 — 環境設定
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="labs/02-first-chat/">
+<span class="md-ellipsis">
+    
+  
+    02 — 首次對話
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="labs/03-tools/">
+<span class="md-ellipsis">
+    
+  
+    03 — 工具
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="labs/04-events/">
+<span class="md-ellipsis">
+    
+  
+    04 — 事件
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="labs/05-sessions/">
+<span class="md-ellipsis">
+    
+  
+    05 — 會話
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="labs/06-mcp/">
+<span class="md-ellipsis">
+    
+  
+    06 — MCP
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="labs/07-wrap-up/">
+<span class="md-ellipsis">
+    
+  
+    07 — 總結
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="labs/extra-extend-api/">
+<span class="md-ellipsis">
+    
+  
+    額外內容 — 擴充 API
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_2_2" type="checkbox"/>
+<div class="md-nav__link md-nav__container">
+<a class="md-nav__link" href="demos/">
+<span class="md-ellipsis">
+    
+  
+    示範
+  
+
+    
+  </span>
+</a>
+<label class="md-nav__link" for="__nav_2_2" id="__nav_2_2_label" tabindex="0">
+<span class="md-nav__icon md-icon"></span>
+</label>
+</div>
+<nav aria-expanded="false" aria-labelledby="__nav_2_2_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_2_2">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    示範
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="demos/01-copilot-sdk-integration/">
+<span class="md-ellipsis">
+    
+  
+    01 — Copilot SDK 整合
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="demos/02-sse-streaming/">
+<span class="md-ellipsis">
+    
+  
+    02 — SSE 串流傳輸
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="demos/03-retail-analytics/">
+<span class="md-ellipsis">
+    
+  
+    03 — 零售分析
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="demos/04-blazor-ui/">
+<span class="md-ellipsis">
+    
+  
+    04 — Blazor 介面
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_3" type="checkbox"/>
+<label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    Python
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_3_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_3">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Python
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_3_1" type="checkbox"/>
+<div class="md-nav__link md-nav__container">
+<a class="md-nav__link" href="labs-python/">
+<span class="md-ellipsis">
+    
+  
+    實作
+  
+
+    
+  </span>
+</a>
+<label class="md-nav__link" for="__nav_3_1" id="__nav_3_1_label" tabindex="0">
+<span class="md-nav__icon md-icon"></span>
+</label>
+</div>
+<nav aria-expanded="false" aria-labelledby="__nav_3_1_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_3_1">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    實作
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="labs-python/01-setup/">
+<span class="md-ellipsis">
+    
+  
+    01 — 環境設定
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="labs-python/02-first-chat/">
+<span class="md-ellipsis">
+    
+  
+    02 — 首次對話
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="labs-python/03-tools/">
+<span class="md-ellipsis">
+    
+  
+    03 — 工具
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="labs-python/04-events/">
+<span class="md-ellipsis">
+    
+  
+    04 — 事件
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="labs-python/05-sessions/">
+<span class="md-ellipsis">
+    
+  
+    05 — 會話
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="labs-python/06-mcp/">
+<span class="md-ellipsis">
+    
+  
+    06 — MCP
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="labs-python/07-wrap-up/">
+<span class="md-ellipsis">
+    
+  
+    07 — 總結
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="labs-python/extra-extend-api/">
+<span class="md-ellipsis">
+    
+  
+    額外內容 — 擴充 API
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_3_2" type="checkbox"/>
+<div class="md-nav__link md-nav__container">
+<a class="md-nav__link" href="demos-python/">
+<span class="md-ellipsis">
+    
+  
+    示範
+  
+
+    
+  </span>
+</a>
+<label class="md-nav__link" for="__nav_3_2" id="__nav_3_2_label" tabindex="0">
+<span class="md-nav__icon md-icon"></span>
+</label>
+</div>
+<nav aria-expanded="false" aria-labelledby="__nav_3_2_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_3_2">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    示範
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="demos-python/01-copilot-sdk-integration/">
+<span class="md-ellipsis">
+    
+  
+    01 — Copilot SDK 整合
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="demos-python/02-sse-streaming/">
+<span class="md-ellipsis">
+    
+  
+    02 — SSE 串流傳輸
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="demos-python/03-retail-analytics/">
+<span class="md-ellipsis">
+    
+  
+    03 — 零售分析
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="demos-python/04-web-ui/">
+<span class="md-ellipsis">
+    
+  
+    04 — Web 介面
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_4" type="checkbox"/>
+<div class="md-nav__link md-nav__container">
+<a class="md-nav__link" href="breakouts/">
+<span class="md-ellipsis">
+    
+  
+    專題
+  
+
+    
+  </span>
+</a>
+<label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+<span class="md-nav__icon md-icon"></span>
+</label>
+</div>
+<nav aria-expanded="false" aria-labelledby="__nav_4_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_4">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    專題
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_4_2" type="checkbox"/>
+<label class="md-nav__link" for="__nav_4_2" id="__nav_4_2_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    參考資料
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_4_2_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_4_2">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    參考資料
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="breakouts/architecture/">
+<span class="md-ellipsis">
+    
+  
+    架構
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="breakouts/custom-agents/">
+<span class="md-ellipsis">
+    
+  
+    自訂代理程式
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="breakouts/hooks-and-governance/">
+<span class="md-ellipsis">
+    
+  
+    掛鉤與治理
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="breakouts/skills/">
+<span class="md-ellipsis">
+    
+  
+    技能
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="breakouts/troubleshooting/">
+<span class="md-ellipsis">
+    
+  
+    疑難排解
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_4_3" type="checkbox"/>
+<div class="md-nav__link md-nav__container">
+<a class="md-nav__link" href="labs/extra-custom-agents/">
+<span class="md-ellipsis">
+    
+  
+    延伸實作
+  
+
+    
+  </span>
+</a>
+<label class="md-nav__link" for="__nav_4_3" id="__nav_4_3_label" tabindex="0">
+<span class="md-nav__icon md-icon"></span>
+</label>
+</div>
+<nav aria-expanded="false" aria-labelledby="__nav_4_3_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_4_3">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    延伸實作
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="labs/extra-governance-hooks/">
+<span class="md-ellipsis">
+    
+  
+    治理掛鉤
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_5" type="checkbox"/>
+<div class="md-nav__link md-nav__container">
+<a class="md-nav__link" href="system-map/">
+<span class="md-ellipsis">
+    
+  
+    系統架構圖
+  
+
+    
+  </span>
+</a>
+</div>
+<nav aria-expanded="false" aria-labelledby="__nav_5_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_5">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    系統架構圖
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="目錄" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+      目錄
+    </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#agent-hq-building-a-retail-analytics-assistant-with-the-github-copilot-sdk">
+<span class="md-ellipsis">
+      
+        🔥 Agent HQ：使用 GitHub Copilot SDK 建置零售分析助手
+      
+    </span>
+</a>
+<nav aria-label="🔥 Agent HQ：使用 GitHub Copilot SDK 建置零售分析助手" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#session-description">
+<span class="md-ellipsis">
+      
+        課程說明
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#session-slides">
+<span class="md-ellipsis">
+      
+        課程投影片
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#learning-outcomes">
+<span class="md-ellipsis">
+      
+        🧠 學習成果
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#keep-learning-with-copilot">
+<span class="md-ellipsis">
+      
+        💬 使用 Copilot 持續學習
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#resources-and-next-steps">
+<span class="md-ellipsis">
+      
+        📚 資源與後續行動
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#microsoft-learn-mcp-server">
+<span class="md-ellipsis">
+      
+        🌟 Microsoft Learn MCP Server
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#what-this-demo-shows">
+<span class="md-ellipsis">
+      
+        ✨ 此示範展示的功能
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#tech-stack">
+<span class="md-ellipsis">
+      
+        🛠️ 技術堆疊
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#quick-start">
+<span class="md-ellipsis">
+      
+        🚀 快速開始
+      
+    </span>
+</a>
+<nav aria-label="🚀 快速開始" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#prerequisites">
+<span class="md-ellipsis">
+      
+        先決條件
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#run-it-net">
+<span class="md-ellipsis">
+      
+        執行專案 — .NET
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#run-it-python">
+<span class="md-ellipsis">
+      
+        執行專案 — Python
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#github-codespaces">
+<span class="md-ellipsis">
+      
+        GitHub Codespaces
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#copilot-cli-binary">
+<span class="md-ellipsis">
+      
+        Copilot CLI 二進位檔案
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#api-endpoints">
+<span class="md-ellipsis">
+      
+        📡 API 端點
+      
+    </span>
+</a>
+<nav aria-label="📡 API 端點" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#example-calls">
+<span class="md-ellipsis">
+      
+        呼叫範例
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#available-models">
+<span class="md-ellipsis">
+      
+        🎯 可用模型
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#architecture">
+<span class="md-ellipsis">
+      
+        🏗️ 架構
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#project-structure">
+<span class="md-ellipsis">
+      
+        📂 專案結構
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#seed-data">
+<span class="md-ellipsis">
+      
+        🗄️ 種子資料
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#custom-agents">
+<span class="md-ellipsis">
+      
+        🤖 自訂代理程式
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#demo-materials">
+<span class="md-ellipsis">
+      
+        📋 示範教材
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#security-notes">
+<span class="md-ellipsis">
+      
+        🔐 安全說明
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#contributing">
+<span class="md-ellipsis">
+      
+        🤝 參與貢獻
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#license">
+<span class="md-ellipsis">
+      
+        📄 授權條款
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-content" data-md-component="content">
+<article class="md-content__inner md-typeset">
+<a class="md-content__button md-icon" href="https://github.com/vicperdana/aigenius-copilotsdk-s5ep2/edit/main/README.md" rel="edit" title="編輯此頁面">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"></path></svg>
+</a>
+<!-- Generated from README.md by scripts/build_index.py. Do not edit by hand. -->
+<p><a name="start-building"></a></p>
+<!--
+  Drop a banner image at img/banner.png and uncomment this block to enable it.
+  <p align="center">
+    <img src="img/banner.png" alt="AI Genius" width="1200"/>
+  </p>
+-->
+<h1 id="ai-genius-season-5-episode-2">AI Genius — 第 5 季第 2 集<a class="headerlink" href="#ai-genius-season-5-episode-2" title="永久連結">¶</a></h1>
+<h2 id="agent-hq-building-a-retail-analytics-assistant-with-the-github-copilot-sdk">🔥 Agent HQ：使用 GitHub Copilot SDK 建置零售分析助手<a class="headerlink" href="#agent-hq-building-a-retail-analytics-assistant-with-the-github-copilot-sdk" title="永久連結">¶</a></h2>
+<h3 id="session-description">課程說明<a class="headerlink" href="#session-description" title="永久連結">¶</a></h3>
+<p>代理程式在聊天視窗中的表現令人印象深刻，但真正的價值體現在將其嵌入團隊已經在使用的應用程式中。本課程基於 <strong>GitHub Copilot SDK</strong> 建置零售交易分析助手：使用 .NET 10 API 透過 SSE 串流傳輸模型回應，由 Blazor 前端即時呈現，並配備治理基礎架構（自訂代理程式、掛鉤、稽核追蹤和程式碼掃描），從而能夠安全交付。</p>
+<h3 id="session-slides">課程投影片<a class="headerlink" href="#session-slides" title="永久連結">¶</a></h3>
+<p>請參閱 <a href="labs/"><code>docs/</code></a> —「三個星期一」的敘事收錄於
+<code>Slide1.png</code> – <code>Slide3.png</code>。</p>
+<h3 id="learning-outcomes">🧠 學習成果<a class="headerlink" href="#learning-outcomes" title="永久連結">¶</a></h3>
+<p>完成本課程後，你將能夠：</p>
+<ul>
+<li>將 GitHub Copilot SDK 執行階段嵌入 ASP.NET Core 應用程式</li>
+<li>透過伺服器傳送事件（SSE），逐一權杖將模型回應串流傳輸到瀏覽器</li>
+<li>在執行階段發現可用模型，而不是硬編碼可能過時的清單</li>
+<li>將企業治理能力（自訂代理程式、掛鉤、稽核記錄和程式碼掃描）應用於 AI 輔助開發</li>
+</ul>
+<h3 id="keep-learning-with-copilot">💬 使用 Copilot 持續學習<a class="headerlink" href="#keep-learning-with-copilot" title="永久連結">¶</a></h3>
+<p>嘗試使用以下提示詞與 GitHub Copilot 互動，探索本課程涵蓋的主題。在 VS Code 中開啟 Copilot Chat（Windows/Linux 使用 <code>Ctrl+Alt+I</code>，Mac 使用 <code>Cmd+Shift+I</code>），貼上提示詞，看看能學到什麼。還可以嘗試連線
+<a href="#-microsoft-learn-mcp-server">Microsoft Learn MCP Server</a>，取得最新的官方文件。</p>
+<p>可以從這些提示詞開始，也可以自行撰寫提示詞！</p>
+<ul>
+<li><em>我可以使用 GitHub Copilot SDK 建置什麼？</em></li>
+<li><em>如何在 ASP.NET Core 中透過伺服器傳送事件串流傳輸 Copilot SDK 回應？</em></li>
+<li><em>如何列出已登入 Copilot 帳號可用的模型？</em></li>
+<li><em>如何為 Copilot SDK 設定身分驗證？</em></li>
+<li><em>什麼是 Copilot 掛鉤？如何使用它們強制實施安全閘門？</em></li>
+</ul>
+<h3 id="resources-and-next-steps">📚 資源與後續行動<a class="headerlink" href="#resources-and-next-steps" title="永久連結">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">資源</th>
+<th style="text-align: left;">說明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><a href="https://github.com/github/copilot-sdk">GitHub Copilot SDK 儲存庫</a></td>
+<td style="text-align: left;">適用於所有受支援語言的 SDK</td>
+</tr>
+<tr>
+<td style="text-align: left;"><a href="https://github.com/github/copilot-sdk/blob/main/docs/getting-started.md">Copilot SDK 入門</a></td>
+<td style="text-align: left;">建置你的第一個 Copilot 技術驅動的應用程式</td>
+</tr>
+<tr>
+<td style="text-align: left;"><a href="https://github.com/github/awesome-copilot">Awesome Copilot</a></td>
+<td style="text-align: left;">自訂代理程式、指令、技能、掛鉤、工作流程和外掛</td>
+</tr>
+<tr>
+<td style="text-align: left;"><a href="https://docs.github.com/copilot">GitHub Copilot 文件</a></td>
+<td style="text-align: left;">官方產品文件</td>
+</tr>
+</tbody>
+</table>
+<h3 id="microsoft-learn-mcp-server">🌟 Microsoft Learn MCP Server<a class="headerlink" href="#microsoft-learn-mcp-server" title="永久連結">¶</a></h3>
+<p>Microsoft Learn MCP Server 可讓 AI 代理程式直接存取 Microsoft 官方文件，為本課程涵蓋的產品和服務提供有可靠依據且保持最新的解答。</p>
+<p><strong>VS Code</strong> — 此儲存庫已包含 <a href="https://github.com/vicperdana/aigenius-copilotsdk-s5ep2/blob/main/.vscode/mcp.json"><code>.vscode/mcp.json</code></a>，因此開啟該資料夾時，伺服器即已完成設定。</p>
+<p><strong>GitHub Copilot CLI</strong> — 執行以下命令，將 Learn MCP Server 安裝為外掛：</p>
+<div class="highlight"><pre><span></span><code><a href="#__codelineno-0-1" id="__codelineno-0-1" name="__codelineno-0-1"></a>/plugin install microsoftdocs/mcp
+</code></pre></div>
+<p>如需瞭解更多資訊、檢視其他用戶端或提交問題，請造訪
+<a href="https://aka.ms/learnmcp">Learn MCP Server 儲存庫</a>。</p>
+<hr/>
+<h2 id="what-this-demo-shows">✨ 此示範展示的功能<a class="headerlink" href="#what-this-demo-shows" title="永久連結">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>功能</th>
+<th>你將看到的內容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>多模型 AI 聊天</strong></td>
+<td>從 Copilot CLI 即時取得模型清單，隨時保持最新</td>
+</tr>
+<tr>
+<td><strong>零售分析領域</strong></td>
+<td>交易資料、客戶分群與分群預測</td>
+</tr>
+<tr>
+<td><strong>即時串流傳輸</strong></td>
+<td>逐一權杖 SSE 回應與批次轉譯</td>
+</tr>
+<tr>
+<td><strong>企業治理</strong></td>
+<td>稽核追蹤、原則掛鉤、安全閘門和程式碼掃描</td>
+</tr>
+</tbody>
+</table>
+<h2 id="tech-stack">🛠️ 技術堆疊<a class="headerlink" href="#tech-stack" title="永久連結">¶</a></h2>
+<p>同一應用程式提供兩種實作，請選擇你偏好的語言。兩條學習路線講授相同的 SDK 概念，並公開完全一致的 HTTP 介面規格。</p>
+<table>
+<thead>
+<tr>
+<th>元件</th>
+<th>.NET 學習路線</th>
+<th>Python 學習路線</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>執行階段</td>
+<td>.NET 10 LTS</td>
+<td>Python 3.11+ (<a href="https://docs.astral.sh/uv/">uv</a>)</td>
+</tr>
+<tr>
+<td>AI SDK</td>
+<td>GitHub Copilot SDK v1.0.9</td>
+<td><code>github-copilot-sdk</code> v1.0.9</td>
+</tr>
+<tr>
+<td>後端</td>
+<td>ASP.NET Core Web API</td>
+<td>FastAPI</td>
+</tr>
+<tr>
+<td>前端</td>
+<td>Blazor WebAssembly</td>
+<td>靜態 HTML + 原生 JS</td>
+</tr>
+<tr>
+<td>資料庫</td>
+<td>SQLite + EF Core</td>
+<td>SQLite + SQLModel</td>
+</tr>
+<tr>
+<td>模型資料存取</td>
+<td>MCP (<code>ModelContextProtocol</code>)</td>
+<td>MCP (<code>mcp</code>)</td>
+</tr>
+<tr>
+<td>測試</td>
+<td>xUnit (26)</td>
+<td>pytest (30)</td>
+</tr>
+<tr>
+<td>程式碼品質檢查</td>
+<td>Roslyn 分析器</td>
+<td>Ruff</td>
+</tr>
+<tr>
+<td>埠</td>
+<td>5050 API / 5051 UI</td>
+<td>5070 (API + UI)</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>共用項目</th>
+<th>技術</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CI/CD</td>
+<td>GitHub Actions</td>
+</tr>
+<tr>
+<td>安全性</td>
+<td>CodeQL、自訂代理程式</td>
+</tr>
+</tbody>
+</table>
+<h2 id="quick-start">🚀 快速開始<a class="headerlink" href="#quick-start" title="永久連結">¶</a></h2>
+<h3 id="prerequisites">先決條件<a class="headerlink" href="#prerequisites" title="永久連結">¶</a></h3>
+<ul>
+<li><a href="https://docs.github.com/copilot">GitHub Copilot CLI</a> — 已使用擁有 Copilot 存取權限的帳號登入</li>
+<li><strong>.NET 學習路線：</strong> <a href="https://dotnet.microsoft.com/download">.NET 10 SDK</a></li>
+<li><strong>Python 學習路線：</strong> <a href="https://www.python.org/downloads/">Python 3.11+</a> 和
+  <a href="https://docs.astral.sh/uv/getting-started/installation/">uv</a></li>
+</ul>
+<h3 id="run-it-net">執行專案 — .NET<a class="headerlink" href="#run-it-net" title="永久連結">¶</a></h3>
+<div class="highlight"><pre><span></span><code><a href="#__codelineno-1-1" id="__codelineno-1-1" name="__codelineno-1-1"></a>dotnet<span class="w"> </span>restore<span class="w"> </span>src/AgentOrchestrator/AgentHQDemo.slnx
+<a href="#__codelineno-1-2" id="__codelineno-1-2" name="__codelineno-1-2"></a>dotnet<span class="w"> </span>build<span class="w">   </span>src/AgentOrchestrator/AgentHQDemo.slnx
+<a href="#__codelineno-1-3" id="__codelineno-1-3" name="__codelineno-1-3"></a>
+<a href="#__codelineno-1-4" id="__codelineno-1-4" name="__codelineno-1-4"></a><span class="c1"># Terminal 1 — API (SQLite DB auto-created and seeded on first run)</span>
+<a href="#__codelineno-1-5" id="__codelineno-1-5" name="__codelineno-1-5"></a>dotnet<span class="w"> </span>run<span class="w"> </span>--project<span class="w"> </span>src/AgentOrchestrator/AgentHQDemo.Api<span class="w"> </span>--urls<span class="w"> </span><span class="s2">"http://localhost:5050"</span>
+<a href="#__codelineno-1-6" id="__codelineno-1-6" name="__codelineno-1-6"></a>
+<a href="#__codelineno-1-7" id="__codelineno-1-7" name="__codelineno-1-7"></a><span class="c1"># Terminal 2 — Blazor UI</span>
+<a href="#__codelineno-1-8" id="__codelineno-1-8" name="__codelineno-1-8"></a>dotnet<span class="w"> </span>run<span class="w"> </span>--project<span class="w"> </span>src/AgentOrchestrator/AgentHQDemo.Web<span class="w"> </span>--urls<span class="w"> </span><span class="s2">"http://localhost:5051"</span>
+</code></pre></div>
+<p>然後開啟 <a href="http://localhost:5051">http://localhost:5051</a>。API 在連接埠 5050 執行。</p>
+<h3 id="run-it-python">執行專案 — Python<a class="headerlink" href="#run-it-python" title="永久連結">¶</a></h3>
+<div class="highlight"><pre><span></span><code><a href="#__codelineno-2-1" id="__codelineno-2-1" name="__codelineno-2-1"></a><span class="nb">cd</span><span class="w"> </span>src/AgentOrchestrator-python
+<a href="#__codelineno-2-2" id="__codelineno-2-2" name="__codelineno-2-2"></a>uv<span class="w"> </span>sync
+<a href="#__codelineno-2-3" id="__codelineno-2-3" name="__codelineno-2-3"></a>
+<a href="#__codelineno-2-4" id="__codelineno-2-4" name="__codelineno-2-4"></a><span class="c1"># One server for both the API and the UI</span>
+<a href="#__codelineno-2-5" id="__codelineno-2-5" name="__codelineno-2-5"></a>uv<span class="w"> </span>run<span class="w"> </span>uvicorn<span class="w"> </span>app.main:app<span class="w"> </span>--port<span class="w"> </span><span class="m">5070</span>
+</code></pre></div>
+<p>然後開啟 <a href="http://localhost:5070">http://localhost:5070</a>。</p>
+<p>兩套技術堆疊刻意使用不同的連接埠，因此可以同時執行。</p>
+<h3 id="github-codespaces">GitHub Codespaces<a class="headerlink" href="#github-codespaces" title="永久連結">¶</a></h3>
+<ol>
+<li>按一下 <strong>Code</strong> → <strong>在 main 分支上建立 codespace</strong></li>
+<li>等待環境設定完成（約 2 分鐘）</li>
+<li>執行你所選學習路線對應的命令</li>
+</ol>
+<h3 id="copilot-cli-binary">Copilot CLI 二進位檔案<a class="headerlink" href="#copilot-cli-binary" title="永久連結">¶</a></h3>
+<p>Copilot SDK 會在建置期間從 <code>registry.npmjs.org</code>
+下載相符的 CLI 二進位檔案。如果該套件登錄站不可存取（例如使用企業代理或電腦離線），建置將失敗並顯示 <code>MSB3923</code>。
+<a href="https://github.com/vicperdana/aigenius-copilotsdk-s5ep2/blob/main/Directory.Build.props"><code>Directory.Build.props</code></a> 會在偵測到全域安裝的 Copilot CLI 時重複使用它，從而避開此問題：</p>
+<div class="highlight"><pre><span></span><code><a href="#__codelineno-3-1" id="__codelineno-3-1" name="__codelineno-3-1"></a>npm<span class="w"> </span>install<span class="w"> </span>-g<span class="w"> </span>@github/copilot
+</code></pre></div>
+<p>如有需要，可覆蓋或停用此偵測：</p>
+<div class="highlight"><pre><span></span><code><a href="#__codelineno-4-1" id="__codelineno-4-1" name="__codelineno-4-1"></a>dotnet<span class="w"> </span>build<span class="w"> </span>-p:CopilotCliBinaryPath<span class="o">=</span>/path/to/copilot<span class="w">   </span><span class="c1"># use a specific binary</span>
+<a href="#__codelineno-4-2" id="__codelineno-4-2" name="__codelineno-4-2"></a>dotnet<span class="w"> </span>build<span class="w"> </span>-p:CopilotUseLocalCli<span class="o">=</span><span class="nb">false</span><span class="w">                </span><span class="c1"># always download</span>
+</code></pre></div>
+<h2 id="api-endpoints">📡 API 端點<a class="headerlink" href="#api-endpoints" title="永久連結">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>端點</th>
+<th>方法</th>
+<th>說明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>/api/chat/stream</code></td>
+<td>POST</td>
+<td>串流聊天（SSE）</td>
+</tr>
+<tr>
+<td><code>/api/chat/models</code></td>
+<td>GET</td>
+<td>可用 AI 模型（從 Copilot CLI 即時取得）</td>
+</tr>
+<tr>
+<td><code>/api/chat/health</code></td>
+<td>GET</td>
+<td>執行狀況檢查</td>
+</tr>
+<tr>
+<td><code>/api/transactions</code></td>
+<td>GET/POST</td>
+<td>列出或新增交易</td>
+</tr>
+<tr>
+<td><code>/api/transactions/{id}</code></td>
+<td>GET/DELETE</td>
+<td>依 ID 取得交易</td>
+</tr>
+<tr>
+<td><code>/api/segments</code></td>
+<td>GET</td>
+<td>客戶分群</td>
+</tr>
+<tr>
+<td><code>/api/segments/{id}</code></td>
+<td>GET</td>
+<td>分群詳細資料</td>
+</tr>
+<tr>
+<td><code>/api/segments/predict/{customerId}</code></td>
+<td>GET</td>
+<td>預測客戶分群</td>
+</tr>
+</tbody>
+</table>
+<h3 id="example-calls">呼叫範例<a class="headerlink" href="#example-calls" title="永久連結">¶</a></h3>
+<div class="highlight"><pre><span></span><code><a href="#__codelineno-5-1" id="__codelineno-5-1" name="__codelineno-5-1"></a><span class="c1"># Stream a chat response</span>
+<a href="#__codelineno-5-2" id="__codelineno-5-2" name="__codelineno-5-2"></a>curl<span class="w"> </span>-N<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>http://localhost:5050/api/chat/stream<span class="w"> </span><span class="se">\</span>
+<a href="#__codelineno-5-3" id="__codelineno-5-3" name="__codelineno-5-3"></a><span class="w">  </span>-H<span class="w"> </span><span class="s2">"Content-Type: application/json"</span><span class="w"> </span><span class="se">\</span>
+<a href="#__codelineno-5-4" id="__codelineno-5-4" name="__codelineno-5-4"></a><span class="w">  </span>-d<span class="w"> </span><span class="s1">'{"prompt": "Which segment has the lowest retention?", "model": "claude-haiku-4.5"}'</span>
+<a href="#__codelineno-5-5" id="__codelineno-5-5" name="__codelineno-5-5"></a>
+<a href="#__codelineno-5-6" id="__codelineno-5-6" name="__codelineno-5-6"></a><span class="c1"># List transactions (10 seed records)</span>
+<a href="#__codelineno-5-7" id="__codelineno-5-7" name="__codelineno-5-7"></a>curl<span class="w"> </span>http://localhost:5050/api/transactions
+<a href="#__codelineno-5-8" id="__codelineno-5-8" name="__codelineno-5-8"></a>
+<a href="#__codelineno-5-9" id="__codelineno-5-9" name="__codelineno-5-9"></a><span class="c1"># Predict customer segment</span>
+<a href="#__codelineno-5-10" id="__codelineno-5-10" name="__codelineno-5-10"></a>curl<span class="w"> </span>http://localhost:5050/api/segments/predict/C003
+<a href="#__codelineno-5-11" id="__codelineno-5-11" name="__codelineno-5-11"></a><span class="c1"># → {"customerId":"C003","predictedSegment":"High Value","confidence":0.89,...}</span>
+</code></pre></div>
+<h2 id="available-models">🎯 可用模型<a class="headerlink" href="#available-models" title="永久連結">¶</a></h2>
+<p>模型選擇器在執行階段透過 <code>GET /api/chat/models</code> 填入；該端點會詢問 Copilot CLI，確定已已登入帳號實際可用的模型。具體清單因帳號而異，並會隨時間變化；範例包括
+<code>claude-haiku-4.5</code>（預設）、<code>auto</code>、<code>claude-sonnet-*</code>、<code>claude-opus-*</code>、
+<code>gpt-5.*</code> 和 <code>gemini-*</code>。</p>
+<blockquote>
+<p>如果 API 無法存取 Copilot CLI，API 和使用者介面都會回復到一個精簡的靜態清單，以確保示範仍能正常呈現。</p>
+</blockquote>
+<h2 id="architecture">🏗️ 架構<a class="headerlink" href="#architecture" title="永久連結">¶</a></h2>
+<pre class="mermaid"><code>graph TB
+    subgraph "Frontend — Port 5051"
+        UI[Blazor WebAssembly&lt;br/&gt;Batched Rendering]
+    end
+
+    subgraph "Backend — Port 5050"
+        API[ASP.NET Core API]
+        Chat[ChatController&lt;br/&gt;SSE Streaming]
+        Txn[TransactionsController]
+        Seg[SegmentsController]
+        SDK[Copilot SDK&lt;br/&gt;Connection Recovery]
+        SVC[RetailAnalyticsService]
+        DB[(SQLite&lt;br/&gt;Auto-seeded)]
+    end
+
+    UI --&gt;|SSE Stream| Chat
+    UI --&gt;|REST| Txn
+    UI --&gt;|REST| Seg
+    Chat --&gt; SDK
+    Txn --&gt; SVC
+    Seg --&gt; SVC
+    SVC --&gt; DB
+    SDK --&gt; Models[Claude / GPT / Gemini]</code></pre>
+<h2 id="project-structure">📂 專案結構<a class="headerlink" href="#project-structure" title="永久連結">¶</a></h2>
+<div class="highlight"><pre><span></span><code><a href="#__codelineno-6-1" id="__codelineno-6-1" name="__codelineno-6-1"></a>.
+<a href="#__codelineno-6-2" id="__codelineno-6-2" name="__codelineno-6-2"></a>├── .devcontainer/              # Codespaces configuration
+<a href="#__codelineno-6-3" id="__codelineno-6-3" name="__codelineno-6-3"></a>├── .github/
+<a href="#__codelineno-6-4" id="__codelineno-6-4" name="__codelineno-6-4"></a>│   ├── agents/                 # Custom Copilot agents
+<a href="#__codelineno-6-5" id="__codelineno-6-5" name="__codelineno-6-5"></a>│   ├── hooks/                  # Governance + audit hooks
+<a href="#__codelineno-6-6" id="__codelineno-6-6" name="__codelineno-6-6"></a>│   ├── prompts/                # Reusable prompts
+<a href="#__codelineno-6-7" id="__codelineno-6-7" name="__codelineno-6-7"></a>│   ├── skills/                 # Copilot skills
+<a href="#__codelineno-6-8" id="__codelineno-6-8" name="__codelineno-6-8"></a>│   ├── workflows/              # CI, CodeQL, setup
+<a href="#__codelineno-6-9" id="__codelineno-6-9" name="__codelineno-6-9"></a>│   ├── copilot-instructions.md # Coding standards for all agents
+<a href="#__codelineno-6-10" id="__codelineno-6-10" name="__codelineno-6-10"></a>│   └── copilot-review-instructions.md
+<a href="#__codelineno-6-11" id="__codelineno-6-11" name="__codelineno-6-11"></a>├── .vscode/mcp.json            # MS Learn MCP server
+<a href="#__codelineno-6-12" id="__codelineno-6-12" name="__codelineno-6-12"></a>├── docs/                       # Labs, walkthroughs, and reference material
+<a href="#__codelineno-6-13" id="__codelineno-6-13" name="__codelineno-6-13"></a>├── img/                        # Session branding
+<a href="#__codelineno-6-14" id="__codelineno-6-14" name="__codelineno-6-14"></a>├── src/
+<a href="#__codelineno-6-15" id="__codelineno-6-15" name="__codelineno-6-15"></a>│   ├── AgentOrchestrator/          # .NET implementation
+<a href="#__codelineno-6-16" id="__codelineno-6-16" name="__codelineno-6-16"></a>│   │   ├── AgentHQDemo.Api/        # Web API — chat, transactions, segments
+<a href="#__codelineno-6-17" id="__codelineno-6-17" name="__codelineno-6-17"></a>│   │   ├── AgentHQDemo.McpServer/  # Read-only MCP server over retail.db
+<a href="#__codelineno-6-18" id="__codelineno-6-18" name="__codelineno-6-18"></a>│   │   ├── AgentHQDemo.Web/        # Blazor WebAssembly UI
+<a href="#__codelineno-6-19" id="__codelineno-6-19" name="__codelineno-6-19"></a>│   │   ├── samples/SdkLabs/        # Runnable lab samples
+<a href="#__codelineno-6-20" id="__codelineno-6-20" name="__codelineno-6-20"></a>│   │   ├── tests/                  # xUnit tests (26)
+<a href="#__codelineno-6-21" id="__codelineno-6-21" name="__codelineno-6-21"></a>│   │   └── AgentHQDemo.slnx        # Solution
+<a href="#__codelineno-6-22" id="__codelineno-6-22" name="__codelineno-6-22"></a>│   └── AgentOrchestrator-python/   # Python implementation
+<a href="#__codelineno-6-23" id="__codelineno-6-23" name="__codelineno-6-23"></a>│       ├── app/                    # FastAPI — routers, services, models, UI
+<a href="#__codelineno-6-24" id="__codelineno-6-24" name="__codelineno-6-24"></a>│       ├── mcp_server/             # Read-only MCP server over retail.db
+<a href="#__codelineno-6-25" id="__codelineno-6-25" name="__codelineno-6-25"></a>│       ├── sdk_labs/               # Runnable lab samples
+<a href="#__codelineno-6-26" id="__codelineno-6-26" name="__codelineno-6-26"></a>│       ├── tests/                  # pytest tests (30)
+<a href="#__codelineno-6-27" id="__codelineno-6-27" name="__codelineno-6-27"></a>│       └── pyproject.toml          # uv project
+<a href="#__codelineno-6-28" id="__codelineno-6-28" name="__codelineno-6-28"></a>├── AGENTS.md                   # Guidelines for AI agents
+<a href="#__codelineno-6-29" id="__codelineno-6-29" name="__codelineno-6-29"></a>└── Directory.Build.props       # Copilot CLI resolution
+</code></pre></div>
+<h2 id="seed-data">🗄️ 種子資料<a class="headerlink" href="#seed-data" title="永久連結">¶</a></h2>
+<p>首次啟動時會自動建立 SQLite 資料庫，其中包含 <strong>10 條交易</strong>，涵蓋 5 位客戶（C001–C005）、4 個類別和 4 家門市，此外還包括：</p>
+<table>
+<thead>
+<tr>
+<th>分群</th>
+<th>客戶數</th>
+<th>平均消費額</th>
+<th>留存率</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>高價值客群</td>
+<td>150</td>
+<td>$850</td>
+<td>92%</td>
+</tr>
+<tr>
+<td>一般客群</td>
+<td>3,200</td>
+<td>$180</td>
+<td>78%</td>
+</tr>
+<tr>
+<td>流失風險客群</td>
+<td>890</td>
+<td>$95</td>
+<td>45%</td>
+</tr>
+<tr>
+<td>新客群</td>
+<td>420</td>
+<td>$120</td>
+<td>65%</td>
+</tr>
+</tbody>
+</table>
+<h2 id="custom-agents">🤖 自訂代理程式<a class="headerlink" href="#custom-agents" title="永久連結">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>代理程式</th>
+<th>用途</th>
+<th>專長</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>dotnet-reviewer</code></td>
+<td>.NET 程式碼檢閱</td>
+<td>安全性、效能和最佳做法</td>
+</tr>
+<tr>
+<td><code>security-scanner</code></td>
+<td>漏洞偵測</td>
+<td>OWASP 十大風險、注入風險</td>
+</tr>
+<tr>
+<td><code>pr-summary</code></td>
+<td>PR 說明文件</td>
+<td>情境感知說明</td>
+</tr>
+</tbody>
+</table>
+<h2 id="demo-materials">📋 示範教材<a class="headerlink" href="#demo-materials" title="永久連結">¶</a></h2>
+<p>完整文件位於 <a href="labs/"><code>docs/</code></a>，並按學習路線分組：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">學習路線</th>
+<th style="text-align: left;">實作</th>
+<th style="text-align: left;">示範</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>.NET</strong></td>
+<td style="text-align: left;"><a href="labs/">七個 Copilot SDK 實作練習</a>（約 2 小時）— 從 <a href="labs/01-setup/">實作 01</a></td>
+<td style="text-align: left;"><a href="demos/">程式碼導覽</a>，介紹 <code>src/AgentOrchestrator/</code> 中的程式碼</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Python</strong></td>
+<td style="text-align: left;"><a href="labs-python/">相同的七個實作練習</a> — 從 <a href="labs-python/01-setup/">實作 01</a></td>
+<td style="text-align: left;"><a href="demos-python/">程式碼導覽</a>，介紹 <code>src/AgentOrchestrator-python/</code> 中的程式碼</td>
+</tr>
+</tbody>
+</table>
+<p>請選擇 <strong>一條</strong> 學習路線，而不是兩條都做；它們講授相同的內容。</p>
+<p>不屬於任一語言學習路線的內容均位於
+<a href="breakouts/"><strong>專題</strong></a>：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">分組</th>
+<th style="text-align: left;">內容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">參考資料</td>
+<td style="text-align: left;"><a href="breakouts/architecture/">架構</a>、<a href="breakouts/custom-agents/">自訂代理程式</a>、<a href="breakouts/hooks-and-governance/">掛鉤</a>、<a href="breakouts/skills/">技能</a>、<a href="breakouts/troubleshooting/">疑難排解</a></td>
+</tr>
+<tr>
+<td style="text-align: left;">延伸實作</td>
+<td style="text-align: left;">兩條學習路線共用的 Copilot CLI 實作練習 — <a href="labs/extra-custom-agents/">自訂代理程式</a>、<a href="labs/extra-governance-hooks/">治理掛鉤</a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="security-notes">🔐 安全說明<a class="headerlink" href="#security-notes" title="永久連結">¶</a></h2>
+<p>此示範 <strong>有意</strong> 包含存在缺陷的程式碼模式，以便在程式碼檢閱和靜態分析示範期間現場發現這些問題：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">缺陷</th>
+<th style="text-align: left;">.NET</th>
+<th style="text-align: left;">Python</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">N+1 查詢（效能檢閱）</td>
+<td style="text-align: left;"><code>GetTransactionsWithSegmentsAsync</code></td>
+<td style="text-align: left;"><code>get_transactions_with_segments</code></td>
+</tr>
+<tr>
+<td style="text-align: left;">缺少 null 檢查（靜態分析）</td>
+<td style="text-align: left;"><code>GetTransactionAsync</code></td>
+<td style="text-align: left;"><code>get_transaction</code></td>
+</tr>
+<tr>
+<td style="text-align: left;">缺少輸入驗證（安全性檢閱）</td>
+<td style="text-align: left;"><code>AddTransactionAsync</code></td>
+<td style="text-align: left;"><code>add_transaction</code></td>
+</tr>
+<tr>
+<td style="text-align: left;">硬編碼門檻值（程式碼異味）</td>
+<td style="text-align: left;"><code>PredictSegmentAsync</code></td>
+<td style="text-align: left;"><code>predict_segment</code></td>
+</tr>
+</tbody>
+</table>
+<p>兩種實作都包含相同的四項缺陷，因此同一份解答適用於任一學習路線。</p>
+<p>相比之下，聊天功能的資料庫存取 <em>並不是</em> 上述缺陷之一。兩條學習路線都透過只讀 MCP 伺服器向模型公開 <code>retail.db</code>（<code>AgentHQDemo.McpServer</code> / <code>mcp_server/</code>），此伺服器使用 <code>Mode=ReadOnly</code>
+開啟 SQLite，並發布五個特定領域工具，而不是通用查詢工具。REST API 仍保留直接 ORM 存取權限；MCP 面向模型，並非用於應用程式存取自己的資料庫。</p>
+<p><strong>解決這些問題之前，請勿用於生產環境。</strong> 請參閱
+<a href="https://github.com/vicperdana/aigenius-copilotsdk-s5ep2/blob/main/SECURITY.md"><code>SECURITY.md</code></a>。</p>
+<blockquote>
+<p><strong>CodeQL 說明：</strong> 儲存庫為私人儲存庫時會跳過分析，因為程式碼掃描需要 GitHub Advanced Security。如果儲存庫轉為公開，分析會自動執行；也可以設定儲存庫變數 <code>ENABLE_CODEQL=true</code>。</p>
+</blockquote>
+<h2 id="contributing">🤝 參與貢獻<a class="headerlink" href="#contributing" title="永久連結">¶</a></h2>
+<p>請參閱 <a href="https://github.com/vicperdana/aigenius-copilotsdk-s5ep2/blob/main/AGENTS.md"><code>AGENTS.md</code></a> 瞭解儲存庫指南，
+<a href="https://github.com/vicperdana/aigenius-copilotsdk-s5ep2/blob/main/CODE_OF_CONDUCT.md"><code>CODE_OF_CONDUCT.md</code></a> 瞭解社群規範，以及
+<a href="https://github.com/vicperdana/aigenius-copilotsdk-s5ep2/blob/main/SUPPORT.md"><code>SUPPORT.md</code></a> 瞭解如何取得幫助。</p>
+<h2 id="license">📄 授權條款<a class="headerlink" href="#license" title="永久連結">¶</a></h2>
+<ul>
+<li><strong>程式碼</strong> — <a href="https://github.com/vicperdana/aigenius-copilotsdk-s5ep2/blob/main/LICENSE">MIT 授權條款</a></li>
+<li><strong>文件與內容</strong> — <a href="https://github.com/vicperdana/aigenius-copilotsdk-s5ep2/blob/main/LICENSE-DOCS">CC BY 4.0</a></li>
+</ul>
+<hr/>
+<p>使用 <a href="https://github.com/github/copilot-sdk">GitHub Copilot SDK</a> 以 ❤️ 建置</p>
+</article>
+</div>
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+</div>
+<button class="md-top md-icon" data-md-component="top" hidden="" type="button">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"></path></svg>
+  返回頂端
+</button>
+</main>
+<footer class="md-footer">
+<div class="md-footer-meta md-typeset">
+<div class="md-footer-meta__inner md-grid">
+<div class="md-copyright">
+<div class="md-copyright__highlight">
+      程式碼採用 MIT 授權 · 文件採用 CC BY 4.0 授權條款
+    </div>
+  
+  
+    建置工具：
+    <a href="https://squidfunk.github.io/mkdocs-material/" rel="noopener" target="_blank">
+      Material for MkDocs
+    </a>
+</div>
+<div class="md-social">
+<a class="md-social__link" href="https://github.com/vicperdana/aigenius-copilotsdk-s5ep2" rel="noopener" target="_blank" title="儲存庫">
+<svg viewbox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"></path></svg>
+</a>
+</div>
+</div>
+</div>
+</footer>
+</div>
+<div class="md-dialog" data-md-component="dialog">
+<div class="md-dialog__inner md-typeset"></div>
+</div>
+<script id="__config" type="application/json">{"annotate":null,"base":".","features":["navigation.tabs","navigation.sections","navigation.top","navigation.instant","navigation.tracking","navigation.indexes","toc.follow","content.code.copy","content.code.annotate","content.action.edit","search.suggest","search.highlight"],"search":"assets/javascripts/workers/search.2c215733.min.js","tags":null,"translations":{"clipboard.copied":"已複製到剪貼簿","clipboard.copy":"複製到剪貼簿","search.result.more.one":"本頁還有 1 個結果","search.result.more.other":"本頁還有 # 個結果","search.result.none":"沒有匹配的文件","search.result.one":"找到 1 個匹配文件","search.result.other":"找到 # 個匹配文件","search.result.placeholder":"輸入內容以開始搜尋","search.result.term.missing":"缺少","select.version":"選擇版本"},"version":null}</script>
+<script src="assets/javascripts/bundle.d7400e89.min.js"></script>
+</body>
+</html>

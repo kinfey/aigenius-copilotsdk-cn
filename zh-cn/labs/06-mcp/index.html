@@ -1,0 +1,1364 @@
+
+<!DOCTYPE html>
+
+<html class="no-js" lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<meta content="使用 GitHub Copilot SDK 构建零售分析助手——包含动手实验、代码讲解和参考资料。" name="description"/>
+<meta content="Vic Perdana" name="author"/>
+<link href="../05-sessions/" rel="prev"/>
+<link href="../07-wrap-up/" rel="next"/>
+<link href="../../assets/images/favicon.png" rel="icon"/>
+<meta content="mkdocs-1.6.1, mkdocs-material-9.7.7" name="generator"/>
+<title>06 — MCP - AI Genius S5E2 — Agent HQ Demo</title>
+<link href="../../assets/stylesheets/main.ec1eaa64.min.css" rel="stylesheet"/>
+<link href="../../assets/stylesheets/palette.ab4e12ef.min.css" rel="stylesheet"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&amp;display=fallback" rel="stylesheet"/>
+<style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+<script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+</head>
+<body data-md-color-accent="indigo" data-md-color-primary="indigo" data-md-color-scheme="default" dir="ltr">
+<input autocomplete="off" class="md-toggle" data-md-toggle="drawer" id="__drawer" type="checkbox"/>
+<input autocomplete="off" class="md-toggle" data-md-toggle="search" id="__search" type="checkbox"/>
+<label class="md-overlay" for="__drawer"></label>
+<div data-md-component="skip">
+<a class="md-skip" href="#lab-06-model-context-protocol-mcp">
+          跳至内容
+        </a>
+</div>
+<div data-md-component="announce">
+</div>
+<header class="md-header" data-md-component="header">
+<nav aria-label="首页" class="md-header__inner md-grid">
+<a aria-label="AI Genius S5E2 — Agent HQ Demo" class="md-header__button md-logo" data-md-component="logo" href="../.." title="AI Genius S5E2 — Agent HQ Demo">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"></path></svg>
+</a>
+<label class="md-header__button md-icon" for="__drawer">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"></path></svg>
+</label>
+<div class="md-header__title" data-md-component="header-title">
+<div class="md-header__ellipsis">
+<div class="md-header__topic">
+<span class="md-ellipsis">
+            AI Genius S5E2 — Agent HQ Demo
+          </span>
+</div>
+<div class="md-header__topic" data-md-component="header-topic">
+<span class="md-ellipsis">
+            
+              06 — MCP
+            
+          </span>
+</div>
+</div>
+</div>
+<form class="md-header__option" data-md-component="palette">
+<input aria-label="切换至浅色模式" class="md-option" data-md-color-accent="indigo" data-md-color-media="(prefers-color-scheme)" data-md-color-primary="indigo" data-md-color-scheme="default" id="__palette_0" name="__palette" type="radio"/>
+<label class="md-header__button md-icon" for="__palette_1" hidden="" title="切换至浅色模式">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m14.3 16-.7-2h-3.2l-.7 2H7.8L11 7h2l3.2 9zM20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12zm-9.15 3.96h2.3L12 9z"></path></svg>
+</label>
+<input aria-label="切换至深色模式" class="md-option" data-md-color-accent="indigo" data-md-color-media="(prefers-color-scheme: light)" data-md-color-primary="indigo" data-md-color-scheme="default" id="__palette_1" name="__palette" type="radio"/>
+<label class="md-header__button md-icon" for="__palette_2" hidden="" title="切换至深色模式">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"></path></svg>
+</label>
+<input aria-label="根据系统偏好设置切换" class="md-option" data-md-color-accent="indigo" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-primary="indigo" data-md-color-scheme="slate" id="__palette_2" name="__palette" type="radio"/>
+<label class="md-header__button md-icon" for="__palette_0" hidden="" title="根据系统偏好设置切换">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"></path></svg>
+</label>
+</form>
+<script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+<label class="md-header__button md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+</label>
+<div class="md-search" data-md-component="search" role="dialog">
+<label class="md-search__overlay" for="__search"></label>
+<div class="md-search__inner" role="search">
+<form class="md-search__form" name="search">
+<input aria-label="搜索" autocapitalize="off" autocomplete="off" autocorrect="off" class="md-search__input" data-md-component="search-query" name="query" placeholder="搜索" required="" spellcheck="false" type="text"/>
+<label class="md-search__icon md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
+</label>
+<nav aria-label="搜索" class="md-search__options">
+<button aria-label="清除" class="md-search__icon md-icon" tabindex="-1" title="清除" type="reset">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg>
+</button>
+</nav>
+<div class="md-search__suggest" data-md-component="search-suggest"></div>
+</form>
+<div class="md-search__output">
+<div class="md-search__scrollwrap" data-md-scrollfix="" tabindex="0">
+<div class="md-search-result" data-md-component="search-result">
+<div class="md-search-result__meta">
+            正在初始化搜索
+          </div>
+<ol class="md-search-result__list" role="presentation"></ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="md-header__source">
+<a class="md-source" data-md-component="source" href="https://github.com/vicperdana/aigenius-copilotsdk-s5ep2" title="前往仓库">
+<div class="md-source__icon md-icon">
+<svg viewbox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"></path></svg>
+</div>
+<div class="md-source__repository">
+    vicperdana/aigenius-copilotsdk-s5ep2
+  </div>
+</a>
+</div>
+</nav>
+</header>
+<div class="md-container" data-md-component="container">
+<nav aria-label="分页" class="md-tabs" data-md-component="tabs">
+<div class="md-grid">
+<ul class="md-tabs__list">
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../..">
+        
+  
+  
+    
+  
+  首页
+
+      </a>
+</li>
+<li class="md-tabs__item md-tabs__item--active">
+<a class="md-tabs__link" href="../">
+          
+  
+  
+    
+  
+  .NET
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../labs-python/">
+          
+  
+  
+    
+  
+  Python
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../breakouts/">
+          
+  
+  
+    
+  
+  深入解析
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../system-map/">
+          
+  
+  
+    
+  
+  系统架构图
+
+        </a>
+</li>
+</ul>
+</div>
+</nav>
+<main class="md-main" data-md-component="main">
+<div class="md-main__inner md-grid">
+<div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="导航" class="md-nav md-nav--primary md-nav--lifted" data-md-level="0">
+<label class="md-nav__title" for="__drawer">
+<a aria-label="AI Genius S5E2 — Agent HQ Demo" class="md-nav__button md-logo" data-md-component="logo" href="../.." title="AI Genius S5E2 — Agent HQ Demo">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"></path></svg>
+</a>
+    AI Genius S5E2 — Agent HQ Demo
+  </label>
+<div class="md-nav__source">
+<a class="md-source" data-md-component="source" href="https://github.com/vicperdana/aigenius-copilotsdk-s5ep2" title="前往仓库">
+<div class="md-source__icon md-icon">
+<svg viewbox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"></path></svg>
+</div>
+<div class="md-source__repository">
+    vicperdana/aigenius-copilotsdk-s5ep2
+  </div>
+</a>
+</div>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../..">
+<span class="md-ellipsis">
+    
+  
+    首页
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+<input checked="" class="md-nav__toggle md-toggle" id="__nav_2" type="checkbox"/>
+<label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+<span class="md-ellipsis">
+    
+  
+    .NET
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="true" aria-labelledby="__nav_2_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_2">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    .NET
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+<input checked="" class="md-nav__toggle md-toggle" id="__nav_2_1" type="checkbox"/>
+<div class="md-nav__link md-nav__container">
+<a class="md-nav__link" href="../">
+<span class="md-ellipsis">
+    
+  
+    实验
+  
+
+    
+  </span>
+</a>
+<label class="md-nav__link" for="__nav_2_1" id="__nav_2_1_label" tabindex="">
+<span class="md-nav__icon md-icon"></span>
+</label>
+</div>
+<nav aria-expanded="true" aria-labelledby="__nav_2_1_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_2_1">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    实验
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../01-setup/">
+<span class="md-ellipsis">
+    
+  
+    01 — 环境设置
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../02-first-chat/">
+<span class="md-ellipsis">
+    
+  
+    02 — 首次对话
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../03-tools/">
+<span class="md-ellipsis">
+    
+  
+    03 — 工具
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../04-events/">
+<span class="md-ellipsis">
+    
+  
+    04 — 事件
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../05-sessions/">
+<span class="md-ellipsis">
+    
+  
+    05 — 会话
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--active">
+<input class="md-nav__toggle md-toggle" id="__toc" type="checkbox"/>
+<label class="md-nav__link md-nav__link--active" for="__toc">
+<span class="md-ellipsis">
+    
+  
+    06 — MCP
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<a class="md-nav__link md-nav__link--active" href="./">
+<span class="md-ellipsis">
+    
+  
+    06 — MCP
+  
+
+    
+  </span>
+</a>
+<nav aria-label="目录" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#step-1-understand-what-mcp-adds">
+<span class="md-ellipsis">
+      
+        步骤 1 — 了解 MCP 带来的能力
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#step-2-choose-the-mcp-transport">
+<span class="md-ellipsis">
+      
+        步骤 2 — 选择 MCP 传输方式
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#step-3-configure-and-run-the-sample">
+<span class="md-ellipsis">
+      
+        步骤 3 — 设置并执行示例
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#step-4-check-that-the-mcp-tools-were-used">
+<span class="md-ellipsis">
+      
+        步骤 4 — 确认已使用 MCP 工具
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#step-5-compare-with-the-editor-mcp-configuration">
+<span class="md-ellipsis">
+      
+        步骤 5 — 与编辑器的 MCP 设置比较
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#step-6-consuming-mcp-versus-serving-it">
+<span class="md-ellipsis">
+      
+        步骤 6 — 使用 MCP 与提供 MCP 服务的差异
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#traps">
+<span class="md-ellipsis">
+      
+        ⚠️ 常见陷阱
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#extra-credit">
+<span class="md-ellipsis">
+      
+        💡 加分练习
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#checkpoint">
+<span class="md-ellipsis">
+      
+        ✅ 检查点
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#related">
+<span class="md-ellipsis">
+      
+        相关内容
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../07-wrap-up/">
+<span class="md-ellipsis">
+    
+  
+    07 — 总结
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../extra-extend-api/">
+<span class="md-ellipsis">
+    
+  
+    额外内容 — 扩展 API
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--section md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_2_2" type="checkbox"/>
+<div class="md-nav__link md-nav__container">
+<a class="md-nav__link" href="../../demos/">
+<span class="md-ellipsis">
+    
+  
+    演示
+  
+
+    
+  </span>
+</a>
+<label class="md-nav__link" for="__nav_2_2" id="__nav_2_2_label" tabindex="">
+<span class="md-nav__icon md-icon"></span>
+</label>
+</div>
+<nav aria-expanded="false" aria-labelledby="__nav_2_2_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_2_2">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    演示
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../demos/01-copilot-sdk-integration/">
+<span class="md-ellipsis">
+    
+  
+    01 — Copilot SDK 整合
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../demos/02-sse-streaming/">
+<span class="md-ellipsis">
+    
+  
+    02 — SSE 流式传输
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../demos/03-retail-analytics/">
+<span class="md-ellipsis">
+    
+  
+    03 — 零售分析
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../demos/04-blazor-ui/">
+<span class="md-ellipsis">
+    
+  
+    04 — Blazor UI
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_3" type="checkbox"/>
+<label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    Python
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_3_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_3">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Python
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_3_1" type="checkbox"/>
+<div class="md-nav__link md-nav__container">
+<a class="md-nav__link" href="../../labs-python/">
+<span class="md-ellipsis">
+    
+  
+    实验
+  
+
+    
+  </span>
+</a>
+<label class="md-nav__link" for="__nav_3_1" id="__nav_3_1_label" tabindex="0">
+<span class="md-nav__icon md-icon"></span>
+</label>
+</div>
+<nav aria-expanded="false" aria-labelledby="__nav_3_1_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_3_1">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    实验
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../labs-python/01-setup/">
+<span class="md-ellipsis">
+    
+  
+    01 — 环境设置
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../labs-python/02-first-chat/">
+<span class="md-ellipsis">
+    
+  
+    02 — 首次对话
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../labs-python/03-tools/">
+<span class="md-ellipsis">
+    
+  
+    03 — 工具
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../labs-python/04-events/">
+<span class="md-ellipsis">
+    
+  
+    04 — 事件
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../labs-python/05-sessions/">
+<span class="md-ellipsis">
+    
+  
+    05 — 会话
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../labs-python/06-mcp/">
+<span class="md-ellipsis">
+    
+  
+    06 — MCP
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../labs-python/07-wrap-up/">
+<span class="md-ellipsis">
+    
+  
+    07 — 总结
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../labs-python/extra-extend-api/">
+<span class="md-ellipsis">
+    
+  
+    额外内容 — 扩展 API
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_3_2" type="checkbox"/>
+<div class="md-nav__link md-nav__container">
+<a class="md-nav__link" href="../../demos-python/">
+<span class="md-ellipsis">
+    
+  
+    演示
+  
+
+    
+  </span>
+</a>
+<label class="md-nav__link" for="__nav_3_2" id="__nav_3_2_label" tabindex="0">
+<span class="md-nav__icon md-icon"></span>
+</label>
+</div>
+<nav aria-expanded="false" aria-labelledby="__nav_3_2_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_3_2">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    演示
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../demos-python/01-copilot-sdk-integration/">
+<span class="md-ellipsis">
+    
+  
+    01 — Copilot SDK 整合
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../demos-python/02-sse-streaming/">
+<span class="md-ellipsis">
+    
+  
+    02 — SSE 流式传输
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../demos-python/03-retail-analytics/">
+<span class="md-ellipsis">
+    
+  
+    03 — 零售分析
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../demos-python/04-web-ui/">
+<span class="md-ellipsis">
+    
+  
+    04 — Web UI
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_4" type="checkbox"/>
+<div class="md-nav__link md-nav__container">
+<a class="md-nav__link" href="../../breakouts/">
+<span class="md-ellipsis">
+    
+  
+    深入解析
+  
+
+    
+  </span>
+</a>
+<label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+<span class="md-nav__icon md-icon"></span>
+</label>
+</div>
+<nav aria-expanded="false" aria-labelledby="__nav_4_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_4">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    深入解析
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_4_2" type="checkbox"/>
+<label class="md-nav__link" for="__nav_4_2" id="__nav_4_2_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    参考数据
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_4_2_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_4_2">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    参考数据
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../breakouts/architecture/">
+<span class="md-ellipsis">
+    
+  
+    架构
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../breakouts/custom-agents/">
+<span class="md-ellipsis">
+    
+  
+    自定义代理
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../breakouts/hooks-and-governance/">
+<span class="md-ellipsis">
+    
+  
+    钩子与治理
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../breakouts/skills/">
+<span class="md-ellipsis">
+    
+  
+    技能
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../breakouts/troubleshooting/">
+<span class="md-ellipsis">
+    
+  
+    故障排除
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_4_3" type="checkbox"/>
+<div class="md-nav__link md-nav__container">
+<a class="md-nav__link" href="../extra-custom-agents/">
+<span class="md-ellipsis">
+    
+  
+    扩展实现
+  
+
+    
+  </span>
+</a>
+<label class="md-nav__link" for="__nav_4_3" id="__nav_4_3_label" tabindex="0">
+<span class="md-nav__icon md-icon"></span>
+</label>
+</div>
+<nav aria-expanded="false" aria-labelledby="__nav_4_3_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_4_3">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    扩展实现
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../extra-governance-hooks/">
+<span class="md-ellipsis">
+    
+  
+    治理钩子
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_5" type="checkbox"/>
+<div class="md-nav__link md-nav__container">
+<a class="md-nav__link" href="../../system-map/">
+<span class="md-ellipsis">
+    
+  
+    系统架构图
+  
+
+    
+  </span>
+</a>
+</div>
+<nav aria-expanded="false" aria-labelledby="__nav_5_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_5">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    系统架构图
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="目录" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#step-1-understand-what-mcp-adds">
+<span class="md-ellipsis">
+      
+        步骤 1 — 了解 MCP 带来的能力
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#step-2-choose-the-mcp-transport">
+<span class="md-ellipsis">
+      
+        步骤 2 — 选择 MCP 传输方式
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#step-3-configure-and-run-the-sample">
+<span class="md-ellipsis">
+      
+        步骤 3 — 设置并执行示例
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#step-4-check-that-the-mcp-tools-were-used">
+<span class="md-ellipsis">
+      
+        步骤 4 — 确认已使用 MCP 工具
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#step-5-compare-with-the-editor-mcp-configuration">
+<span class="md-ellipsis">
+      
+        步骤 5 — 与编辑器的 MCP 设置比较
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#step-6-consuming-mcp-versus-serving-it">
+<span class="md-ellipsis">
+      
+        步骤 6 — 使用 MCP 与提供 MCP 服务的差异
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#traps">
+<span class="md-ellipsis">
+      
+        ⚠️ 常见陷阱
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#extra-credit">
+<span class="md-ellipsis">
+      
+        💡 加分练习
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#checkpoint">
+<span class="md-ellipsis">
+      
+        ✅ 检查点
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#related">
+<span class="md-ellipsis">
+      
+        相关内容
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-content" data-md-component="content">
+<article class="md-content__inner md-typeset">
+<a class="md-content__button md-icon" href="https://github.com/vicperdana/aigenius-copilotsdk-s5ep2/edit/main/docs/labs/06-mcp/README.md" rel="edit" title="编辑此页">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"></path></svg>
+</a>
+<h1 id="lab-06-model-context-protocol-mcp">实验 06 — Model Context Protocol (MCP)<a class="headerlink" href="#lab-06-model-context-protocol-mcp" title="永久链接">¶</a></h1>
+<p><strong>目标：</strong> 将 Model Context Protocol 服务器连接到 Copilot SDK 会话，让代理可以使用并非由您自行编写的工具。</p>
+<p><strong>时间：</strong> 约 20 分钟</p>
+<p><strong>先决条件：</strong> <a href="../05-sessions/">实验 05</a> 完成，且 HTTP MCP 服务器需要互联网连接。</p>
+<h2 id="step-1-understand-what-mcp-adds">步骤 1 — 了解 MCP 带来的能力<a class="headerlink" href="#step-1-understand-what-mcp-adds" title="永久链接">¶</a></h2>
+<p>在<a href="../03-tools/">实验 03</a>中，您通过编写并注册 C# 函数为模型提供工具。这种方式非常强大，但每项能力仍对应一段需要由您负责、测试和维护的代码。</p>
+<p>MCP 改变了问题的处理方式。Model Context Protocol 服务器通过标准协议公开一整套工具，而 SDK 可以将该服务器连接到会话。随后，模型会在正常的推理循环中发现并调用服务器提供的工具。</p>
+<p>本实验使用的外部工具集来自 Microsoft Learn。您无需编写
+<code>SearchDocsAsync</code>；只需连接到 Learn MCP 服务器，代理即可直接查询产品文档。</p>
+<h2 id="step-2-choose-the-mcp-transport">步骤 2 — 选择 MCP 传输方式<a class="headerlink" href="#step-2-choose-the-mcp-transport" title="永久链接">¶</a></h2>
+<p>SDK 有两种 MCP 服务器配置类型：</p>
+<div class="highlight"><pre><span></span><code><a href="#__codelineno-0-1" id="__codelineno-0-1" name="__codelineno-0-1"></a><span class="n">McpServers</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Dictionary</span><span class="o">&lt;</span><span class="kt">string</span><span class="p">,</span><span class="w"> </span><span class="n">McpServerConfig</span><span class="o">&gt;</span>
+<a href="#__codelineno-0-2" id="__codelineno-0-2" name="__codelineno-0-2"></a><span class="p">{</span>
+<a href="#__codelineno-0-3" id="__codelineno-0-3" name="__codelineno-0-3"></a><span class="w">    </span><span class="na">["microsoft.docs.mcp"]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">McpHttpServerConfig</span>
+<a href="#__codelineno-0-4" id="__codelineno-0-4" name="__codelineno-0-4"></a><span class="w">    </span><span class="p">{</span>
+<a href="#__codelineno-0-5" id="__codelineno-0-5" name="__codelineno-0-5"></a><span class="w">        </span><span class="n">Url</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"https://learn.microsoft.com/api/mcp"</span>
+<a href="#__codelineno-0-6" id="__codelineno-0-6" name="__codelineno-0-6"></a><span class="w">    </span><span class="p">}</span>
+<a href="#__codelineno-0-7" id="__codelineno-0-7" name="__codelineno-0-7"></a><span class="p">};</span>
+</code></pre></div>
+<p>当服务器已在其他位置运行并可通过 HTTP 访问时，请使用 <code>McpHttpServerConfig</code>。本例正是如此：Microsoft Learn 在
+<code>https://learn.microsoft.com/api/mcp</code> 托管服务器，因此本地无需安装任何组件。</p>
+<p>当 SDK 需要启动本地 MCP 进程，并通过标准输入和标准输出与之通信时，请使用 <code>McpStdioServerConfig</code>。这种形式常用于以命令行程序方式在本机运行的文件系统工具、数据库辅助程序或特定语言的 MCP 服务器。</p>
+<p>从模型的角度看，两种传输方式的结果相同：已命名的 MCP 工具都会在会话中可用。</p>
+<h2 id="step-3-configure-and-run-the-sample">步骤 3 — 设置并执行示例<a class="headerlink" href="#step-3-configure-and-run-the-sample" title="永久链接">¶</a></h2>
+<p>打开
+<a href="https://github.com/vicperdana/aigenius-copilotsdk-s5ep2/blob/main/src/AgentOrchestrator/samples/SdkLabs/McpSample.cs"><code>McpSample.cs</code></a>
+并找到 <code>SessionConfig</code>:</p>
+<div class="highlight"><pre><span></span><code><a href="#__codelineno-1-1" id="__codelineno-1-1" name="__codelineno-1-1"></a><span class="kt">var</span><span class="w"> </span><span class="n">modelId</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="n">ModelPicker</span><span class="p">.</span><span class="n">PickAsync</span><span class="p">(</span><span class="n">client</span><span class="p">,</span><span class="w"> </span><span class="n">requestedModelId</span><span class="p">);</span>
+<a href="#__codelineno-1-2" id="__codelineno-1-2" name="__codelineno-1-2"></a>
+<a href="#__codelineno-1-3" id="__codelineno-1-3" name="__codelineno-1-3"></a><span class="kt">var</span><span class="w"> </span><span class="n">config</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">SessionConfig</span>
+<a href="#__codelineno-1-4" id="__codelineno-1-4" name="__codelineno-1-4"></a><span class="p">{</span>
+<a href="#__codelineno-1-5" id="__codelineno-1-5" name="__codelineno-1-5"></a><span class="w">    </span><span class="n">Model</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">modelId</span><span class="p">,</span>
+<a href="#__codelineno-1-6" id="__codelineno-1-6" name="__codelineno-1-6"></a><span class="w">    </span><span class="n">Streaming</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">false</span><span class="p">,</span>
+<a href="#__codelineno-1-7" id="__codelineno-1-7" name="__codelineno-1-7"></a><span class="w">    </span><span class="n">McpServers</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Dictionary</span><span class="o">&lt;</span><span class="kt">string</span><span class="p">,</span><span class="w"> </span><span class="n">McpServerConfig</span><span class="o">&gt;</span>
+<a href="#__codelineno-1-8" id="__codelineno-1-8" name="__codelineno-1-8"></a><span class="w">    </span><span class="p">{</span>
+<a href="#__codelineno-1-9" id="__codelineno-1-9" name="__codelineno-1-9"></a><span class="w">        </span><span class="na">["microsoft.docs.mcp"]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">McpHttpServerConfig</span>
+<a href="#__codelineno-1-10" id="__codelineno-1-10" name="__codelineno-1-10"></a><span class="w">        </span><span class="p">{</span>
+<a href="#__codelineno-1-11" id="__codelineno-1-11" name="__codelineno-1-11"></a><span class="w">            </span><span class="n">Url</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"https://learn.microsoft.com/api/mcp"</span>
+<a href="#__codelineno-1-12" id="__codelineno-1-12" name="__codelineno-1-12"></a><span class="w">        </span><span class="p">}</span>
+<a href="#__codelineno-1-13" id="__codelineno-1-13" name="__codelineno-1-13"></a><span class="w">    </span><span class="p">},</span>
+<a href="#__codelineno-1-14" id="__codelineno-1-14" name="__codelineno-1-14"></a><span class="w">    </span><span class="n">OnPermissionRequest</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">PermissionHandler</span><span class="p">.</span><span class="n">ApproveAll</span>
+<a href="#__codelineno-1-15" id="__codelineno-1-15" name="__codelineno-1-15"></a><span class="p">};</span>
+</code></pre></div>
+<p><code>SessionConfig.McpServers</code> 是 <code>IDictionary&lt;string, McpServerConfig&gt;</code>。键是服务器名称，值则是各传输方式专用的服务器设置对象。</p>
+<p>示例还设置了 <code>OnPermissionRequest = PermissionHandler.ApproveAll</code>。在我们的测试中，主机 CLI 似乎已预先批准 MCP 工具的使用，因此没有观察到该处理程序被触发。请将它视为额外防护，而不要据此认定这一行始终必需。相关权限注意事项与
+<a href="../03-tools/">实验 03</a>中的说明类似。</p>
+<p>执行示例：</p>
+<div class="highlight"><pre><span></span><code><a href="#__codelineno-2-1" id="__codelineno-2-1" name="__codelineno-2-1"></a>dotnet<span class="w"> </span>run<span class="w"> </span>--project<span class="w"> </span>src/AgentOrchestrator/samples/SdkLabs<span class="w"> </span>--<span class="w"> </span>mcp
+</code></pre></div>
+<p>以下是经过验证的运行输出：</p>
+<div class="highlight"><pre><span></span><code><a href="#__codelineno-3-1" id="__codelineno-3-1" name="__codelineno-3-1"></a>== Lab 06: mcp ==
+<a href="#__codelineno-3-2" id="__codelineno-3-2" name="__codelineno-3-2"></a>
+<a href="#__codelineno-3-3" id="__codelineno-3-3" name="__codelineno-3-3"></a>Model: claude-haiku-4.5
+<a href="#__codelineno-3-4" id="__codelineno-3-4" name="__codelineno-3-4"></a>Prompt: asking the model to consult Microsoft Learn docs
+<a href="#__codelineno-3-5" id="__codelineno-3-5" name="__codelineno-3-5"></a>
+<a href="#__codelineno-3-6" id="__codelineno-3-6" name="__codelineno-3-6"></a>  [mcp] SessionMcpServersLoadedEvent
+<a href="#__codelineno-3-7" id="__codelineno-3-7" name="__codelineno-3-7"></a>
+<a href="#__codelineno-3-8" id="__codelineno-3-8" name="__codelineno-3-8"></a>Assistant: I don't have dedicated "Microsoft Learn tools" in my available toolset.
+<a href="#__codelineno-3-9" id="__codelineno-3-9" name="__codelineno-3-9"></a>However, I can use the `web_fetch` tool to retrieve current information.
+<a href="#__codelineno-3-10" id="__codelineno-3-10" name="__codelineno-3-10"></a>  [tool] ToolExecutionStartEvent: web_fetch
+<a href="#__codelineno-3-11" id="__codelineno-3-11" name="__codelineno-3-11"></a>  [tool] ToolExecutionCompleteEvent: web_fetch (success=True)
+<a href="#__codelineno-3-12" id="__codelineno-3-12" name="__codelineno-3-12"></a>
+<a href="#__codelineno-3-13" id="__codelineno-3-13" name="__codelineno-3-13"></a>Assistant: Based on Microsoft Learn documentation: **Azure Container Apps is a
+<a href="#__codelineno-3-14" id="__codelineno-3-14" name="__codelineno-3-14"></a>serverless platform for running containerized applications without managing the
+<a href="#__codelineno-3-15" id="__codelineno-3-15" name="__codelineno-3-15"></a>underlying infrastructure.** It supports API endpoints, background jobs,
+<a href="#__codelineno-3-16" id="__codelineno-3-16" name="__codelineno-3-16"></a>event-driven processing and microservices, scaling automatically.
+<a href="#__codelineno-3-17" id="__codelineno-3-17" name="__codelineno-3-17"></a>
+<a href="#__codelineno-3-18" id="__codelineno-3-18" name="__codelineno-3-18"></a>⚠️  No MCP tool was invoked.
+<a href="#__codelineno-3-19" id="__codelineno-3-19" name="__codelineno-3-19"></a>    The model used non-MCP tool(s) instead: web_fetch
+<a href="#__codelineno-3-20" id="__codelineno-3-20" name="__codelineno-3-20"></a>    The answer may have come from the model's own knowledge or a built-in
+<a href="#__codelineno-3-21" id="__codelineno-3-21" name="__codelineno-3-21"></a>    tool rather than Microsoft Learn. Check the server is reachable and that
+<a href="#__codelineno-3-22" id="__codelineno-3-22" name="__codelineno-3-22"></a>    its tools were loaded — look for the [mcp] lines above.
+</code></pre></div>
+<p>⚠️ <strong>请仔细阅读该输出 — 这正是本实验的重点。</strong></p>
+<p>这个答案看起来很权威，甚至引用了 Microsoft Learn，但它<strong>并不是</strong> MCP 的结果。<code>SessionMcpServersLoadedEvent</code> 已触发，说明服务器配置已被接受；然而，工具从未提供给模型，因此模型转而使用内置的 <code>web_fetch</code>，却仍然生成了看似合理的答案。</p>
+<p>如果没有最后的检查，您可能会把这次运行视为成功的 MCP 演示。这正是本示例要防止的“假阳性”，也是示例以<strong>非零状态</strong>退出的原因。</p>
+<blockquote>
+<p><strong>此环境中的状态：</strong> Learn MCP 服务器虽已加载，却未向会话公开工具。在此问题解决之前，请将上述 ⚠️ 路径视为预期输出。如果 MCP 工具<em>确实</em>成功加载，最后一行会显示
+<code>✅ MCP tool(s) invoked: &lt;server&gt;/&lt;tool&gt;</code> ，而且退出代码为 0。</p>
+</blockquote>
+<h2 id="step-4-check-that-the-mcp-tools-were-used">步骤 4 — 确认已使用 MCP 工具<a class="headerlink" href="#step-4-check-that-the-mcp-tools-were-used" title="永久链接">¶</a></h2>
+<p>示例会订阅 SDK 事件，并记录重要事件：</p>
+<ul>
+<li><code>SessionMcpServersLoadedEvent</code> — 服务器设置已获接受</li>
+<li><code>McpToolsListChangedEvent</code> — 服务器已发布工具列表</li>
+<li><code>ToolExecutionStartEvent</code> / <code>ToolExecutionCompleteEvent</code> — 工具确实已执行</li>
+</ul>
+<p>关键在于如何判断某个工具是否来自 <em>MCP</em>。<code>ToolExecutionStartEvent</code>
+包含 <code>McpServerName</code>；只有设置了该值的执行才会计入结果。<code>web_fetch</code> 等内置工具没有服务器名称，因此虽然会被记录，但不会计为 MCP 成功调用：</p>
+<div class="highlight"><pre><span></span><code><a href="#__codelineno-4-1" id="__codelineno-4-1" name="__codelineno-4-1"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="kt">string</span><span class="p">.</span><span class="n">IsNullOrWhiteSpace</span><span class="p">(</span><span class="n">start</span><span class="p">.</span><span class="n">Data</span><span class="p">.</span><span class="n">McpServerName</span><span class="p">))</span>
+<a href="#__codelineno-4-2" id="__codelineno-4-2" name="__codelineno-4-2"></a><span class="p">{</span>
+<a href="#__codelineno-4-3" id="__codelineno-4-3" name="__codelineno-4-3"></a><span class="w">    </span><span class="n">mcpTools</span><span class="p">.</span><span class="n">Add</span><span class="p">(</span><span class="n">toolName</span><span class="p">);</span>
+<a href="#__codelineno-4-4" id="__codelineno-4-4" name="__codelineno-4-4"></a><span class="p">}</span>
+</code></pre></div>
+<p>⚠️ 此示例的旧版本会统计<em>所有</em>工具执行，并错误地报告 <code>✅ MCP tool(s) invoked: web_fetch</code>——尽管该成功事件与 MCP 完全无关。统计错误对象比完全不检查更糟，因为它会造成虚假的信心。</p>
+<p>如果没有执行任何 MCP 工具，示例会打印：</p>
+<div class="highlight"><pre><span></span><code><a href="#__codelineno-5-1" id="__codelineno-5-1" name="__codelineno-5-1"></a>⚠️  No MCP tool was invoked.
+<a href="#__codelineno-5-2" id="__codelineno-5-2" name="__codelineno-5-2"></a>    The model used non-MCP tool(s) instead: web_fetch
+</code></pre></div>
+<p>随后，程序会以非零状态退出，确保脚本不会把看似合理、但完全由模型自行生成的答案误认为由 MCP 支持的成功结果。这一点非常重要，因为 Azure Container Apps 属于公开知识；即使没有任何 MCP 工具可用，模型也可能依据训练数据作答。</p>
+<h2 id="step-5-compare-with-the-editor-mcp-configuration">步骤 5 — 与编辑器的 MCP 设置比较<a class="headerlink" href="#step-5-compare-with-the-editor-mcp-configuration" title="永久链接">¶</a></h2>
+<p>此仓库已在 VS Code 中设置相同服务器，位置为
+<a href="https://github.com/vicperdana/aigenius-copilotsdk-s5ep2/blob/main/.vscode/mcp.json"><code>.vscode/mcp.json</code></a>:</p>
+<div class="highlight"><pre><span></span><code><a href="#__codelineno-6-1" id="__codelineno-6-1" name="__codelineno-6-1"></a><span class="p">{</span>
+<a href="#__codelineno-6-2" id="__codelineno-6-2" name="__codelineno-6-2"></a><span class="w">  </span><span class="nt">"servers"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a href="#__codelineno-6-3" id="__codelineno-6-3" name="__codelineno-6-3"></a><span class="w">    </span><span class="nt">"microsoft.docs.mcp"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a href="#__codelineno-6-4" id="__codelineno-6-4" name="__codelineno-6-4"></a><span class="w">      </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http"</span><span class="p">,</span>
+<a href="#__codelineno-6-5" id="__codelineno-6-5" name="__codelineno-6-5"></a><span class="w">      </span><span class="nt">"url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://learn.microsoft.com/api/mcp"</span>
+<a href="#__codelineno-6-6" id="__codelineno-6-6" name="__codelineno-6-6"></a><span class="w">    </span><span class="p">}</span>
+<a href="#__codelineno-6-7" id="__codelineno-6-7" name="__codelineno-6-7"></a><span class="w">  </span><span class="p">}</span>
+<a href="#__codelineno-6-8" id="__codelineno-6-8" name="__codelineno-6-8"></a><span class="p">}</span>
+</code></pre></div>
+<p>该文件供编辑器使用；<code>SessionConfig.McpServers</code> 则供应用程序或示例中运行的 Copilot SDK 会话使用。两者是不同的客户端，但会通过同一协议与同一服务器通信。</p>
+<p>这正是 MCP 的核心价值：一套协议，多种客户端。同一个工具服务器可以同时服务于编辑器、CLI、测试工具或应用代理。</p>
+<h2 id="step-6-consuming-mcp-versus-serving-it">步骤 6 — 使用 MCP 与 <em>提供服务</em> 它<a class="headerlink" href="#step-6-consuming-mcp-versus-serving-it" title="永久链接">¶</a></h2>
+<p>截至目前，会话都指向其他人提供的服务器。此仓库也 <strong>实现</strong> 一项，而且值得了解原因。</p>
+<p>到目前为止，<code>CopilotChatService</code> 会将提示词发送给模型，但模型无法访问应用程序自身的数据。如果询问聊天功能“哪些客户的消费最高？”，它只能猜测，因为零售数据库对它完全不可见。</p>
+<p><a href="https://github.com/vicperdana/aigenius-copilotsdk-s5ep2/blob/main/src/AgentOrchestrator/AgentHQDemo.McpServer/RetailTools.cs"><code>AgentHQDemo.McpServer</code></a>
+将会通过以下项目，以五个只读工具补充该缺口： <code>retail.db</code>:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">工具</th>
+<th style="text-align: left;">回答</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>list_transactions</code></td>
+<td style="text-align: left;">「显示 C003 最近的购买记录」</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>get_transaction</code></td>
+<td style="text-align: left;">「交易 7 的内容是什么？」</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>list_segments</code></td>
+<td style="text-align: left;">「有哪些客户细分群体？」</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>get_customer_summary</code></td>
+<td style="text-align: left;">「C001 总共消费了多少？」</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>predict_segment</code></td>
+<td style="text-align: left;">「C003 属于哪个客户细分群体？」</td>
+</tr>
+</tbody>
+</table>
+<p>服务器是基于以下包构建的控制台应用程序： <code>ModelContextProtocol</code> 模块，其中以属性完成注册：</p>
+<div class="highlight"><pre><span></span><code><a href="#__codelineno-7-1" id="__codelineno-7-1" name="__codelineno-7-1"></a><span class="n">builder</span><span class="p">.</span><span class="n">Services</span>
+<a href="#__codelineno-7-2" id="__codelineno-7-2" name="__codelineno-7-2"></a><span class="w">    </span><span class="p">.</span><span class="n">AddMcpServer</span><span class="p">(</span><span class="n">options</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">options</span><span class="p">.</span><span class="n">ServerInfo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">Name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"retail-analytics"</span><span class="p">,</span><span class="w"> </span><span class="n">Version</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"1.0.0"</span><span class="w"> </span><span class="p">})</span>
+<a href="#__codelineno-7-3" id="__codelineno-7-3" name="__codelineno-7-3"></a><span class="w">    </span><span class="p">.</span><span class="n">WithStdioServerTransport</span><span class="p">()</span>
+<a href="#__codelineno-7-4" id="__codelineno-7-4" name="__codelineno-7-4"></a><span class="w">    </span><span class="p">.</span><span class="n">WithToolsFromAssembly</span><span class="p">();</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a href="#__codelineno-8-1" id="__codelineno-8-1" name="__codelineno-8-1"></a><span class="na">[McpServerTool(Name = "get_customer_summary", ReadOnly = true, Destructive = false)]</span>
+<a href="#__codelineno-8-2" id="__codelineno-8-2" name="__codelineno-8-2"></a><span class="na">[Description("Summarises one customer's spending: total, average, transaction count ...")]</span>
+<a href="#__codelineno-8-3" id="__codelineno-8-3" name="__codelineno-8-3"></a><span class="k">public</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="k">async</span><span class="w"> </span><span class="n">Task</span><span class="o">&lt;</span><span class="n">CustomerSummaryDto</span><span class="o">&gt;</span><span class="w"> </span><span class="n">GetCustomerSummaryAsync</span><span class="p">(...)</span>
+</code></pre></div>
+<p>⚠️ <strong>stdio 会通过 stdout 传送通信协议</strong>，因此所有记录都必须发送至 stderr。多余的 <code>Console.WriteLine</code> 会破坏流，使服务器看似停止响应：</p>
+<div class="highlight"><pre><span></span><code><a href="#__codelineno-9-1" id="__codelineno-9-1" name="__codelineno-9-1"></a><span class="n">builder</span><span class="p">.</span><span class="n">Logging</span><span class="p">.</span><span class="n">AddConsole</span><span class="p">(</span><span class="n">options</span><span class="w"> </span><span class="o">=&gt;</span>
+<a href="#__codelineno-9-2" id="__codelineno-9-2" name="__codelineno-9-2"></a><span class="p">{</span>
+<a href="#__codelineno-9-3" id="__codelineno-9-3" name="__codelineno-9-3"></a><span class="w">    </span><span class="n">options</span><span class="p">.</span><span class="n">LogToStandardErrorThreshold</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">LogLevel</span><span class="p">.</span><span class="n">Trace</span><span class="p">;</span>
+<a href="#__codelineno-9-4" id="__codelineno-9-4" name="__codelineno-9-4"></a><span class="p">});</span>
+</code></pre></div>
+<p><a href="https://github.com/vicperdana/aigenius-copilotsdk-s5ep2/blob/main/src/AgentOrchestrator/AgentHQDemo.Api/Services/CopilotChatService.cs"><code>CopilotChatService</code></a>
+将使用以下结构连接： <code>McpStdioServerConfig</code> 步骤 2 的结构：</p>
+<div class="highlight"><pre><span></span><code><a href="#__codelineno-10-1" id="__codelineno-10-1" name="__codelineno-10-1"></a><span class="n">McpServers</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Dictionary</span><span class="o">&lt;</span><span class="kt">string</span><span class="p">,</span><span class="w"> </span><span class="n">McpServerConfig</span><span class="o">&gt;</span>
+<a href="#__codelineno-10-2" id="__codelineno-10-2" name="__codelineno-10-2"></a><span class="p">{</span>
+<a href="#__codelineno-10-3" id="__codelineno-10-3" name="__codelineno-10-3"></a><span class="w">    </span><span class="na">["retail-analytics"]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">McpStdioServerConfig</span>
+<a href="#__codelineno-10-4" id="__codelineno-10-4" name="__codelineno-10-4"></a><span class="w">    </span><span class="p">{</span>
+<a href="#__codelineno-10-5" id="__codelineno-10-5" name="__codelineno-10-5"></a><span class="w">        </span><span class="n">Command</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"dotnet"</span><span class="p">,</span>
+<a href="#__codelineno-10-6" id="__codelineno-10-6" name="__codelineno-10-6"></a><span class="w">        </span><span class="n">Args</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="n">serverDll</span><span class="p">],</span>
+<a href="#__codelineno-10-7" id="__codelineno-10-7" name="__codelineno-10-7"></a><span class="w">        </span><span class="n">WorkingDirectory</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">apiDirectory</span>
+<a href="#__codelineno-10-8" id="__codelineno-10-8" name="__codelineno-10-8"></a><span class="w">    </span><span class="p">}</span>
+<a href="#__codelineno-10-9" id="__codelineno-10-9" name="__codelineno-10-9"></a><span class="p">};</span>
+</code></pre></div>
+<p>真正的重点是两项设计决策。</p>
+<p><strong>1. 在连接层级落实最小权限，而不只是在代码中。</strong> 内容将以以下方式打开： <code>Mode=ReadOnly</code>，因此写入将由 SQLite 本身拒绝：</p>
+<div class="highlight"><pre><span></span><code><a href="#__codelineno-11-1" id="__codelineno-11-1" name="__codelineno-11-1"></a><span class="n">options</span><span class="p">.</span><span class="n">UseSqlite</span><span class="p">(</span><span class="s">$"Data Source={dbPath};Mode=ReadOnly"</span><span class="p">);</span>
+</code></pre></div>
+<p>即使提示中包含指示，也无法修改数据，因为根本未授予该能力。请将此做法与「我们只是没有编写任何
+<code>SaveChangesAsync</code> 调用”，这只是惯例，不是控制措施。</p>
+<p><strong>2. 使用领域工具，而不是原始 SQL。</strong> 模型会获取 <code>get_customer_summary</code>，而不是
+<code>run_query</code>。使用通用 SQLite MCP 服务器虽不必编写任何代码，却也会向模型提供可执行任意 SQL 的逃生通道。工具界面 <em>是</em> 安全边界，因此请保持小而明确的范围。</p>
+<p>请注意，以下部分<strong>没有</strong>改变：REST API 仍通过 <code>RetailAnalyticsService</code> 直接读取数据库。MCP 面向的是<em>模型</em>，不适合让应用程序通过它访问自身数据库；把自己的 CRUD 操作经由 LLM 工具协议转发，只会增加一次子进程跳转，并无谓地牺牲事务一致性和类型安全。</p>
+<p>试试看：</p>
+<div class="highlight"><pre><span></span><code><a href="#__codelineno-12-1" id="__codelineno-12-1" name="__codelineno-12-1"></a>dotnet<span class="w"> </span>run<span class="w"> </span>--project<span class="w"> </span>src/AgentOrchestrator/AgentHQDemo.Api
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a href="#__codelineno-13-1" id="__codelineno-13-1" name="__codelineno-13-1"></a>curl<span class="w"> </span>-s<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>http://localhost:5050/api/chat<span class="w"> </span><span class="se">\</span>
+<a href="#__codelineno-13-2" id="__codelineno-13-2" name="__codelineno-13-2"></a><span class="w">  </span>-H<span class="w"> </span><span class="s2">"Content-Type: application/json"</span><span class="w"> </span><span class="se">\</span>
+<a href="#__codelineno-13-3" id="__codelineno-13-3" name="__codelineno-13-3"></a><span class="w">  </span>-d<span class="w"> </span><span class="s1">'{"prompt":"What is customer C003 total spend and which segment are they in?"}'</span>
+</code></pre></div>
+<p>查看 API 日志中的证据，方式与步骤 4 完全相同：</p>
+<div class="highlight"><pre><span></span><code><a href="#__codelineno-14-1" id="__codelineno-14-1" name="__codelineno-14-1"></a>MCP tool call: retail-analytics/get_customer_summary
+<a href="#__codelineno-14-2" id="__codelineno-14-2" name="__codelineno-14-2"></a>MCP tool call: retail-analytics/predict_segment
+</code></pre></div>
+<p>💡 <strong>权限处理模式具有特定范围，不是全面应用。</strong> <code>PermissionHandler.ApproveAll</code>
+适合控制台实验，但此服务可从浏览器访问，因此只批准来自以下位置的只读工具： <code>retail-analytics</code>:</p>
+<div class="highlight"><pre><span></span><code><a href="#__codelineno-15-1" id="__codelineno-15-1" name="__codelineno-15-1"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">request</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">PermissionRequestMcp</span><span class="w"> </span><span class="n">mcp</span>
+<a href="#__codelineno-15-2" id="__codelineno-15-2" name="__codelineno-15-2"></a><span class="w">    </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">mcp</span><span class="p">.</span><span class="n">ServerName</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">RetailMcpServer</span>
+<a href="#__codelineno-15-3" id="__codelineno-15-3" name="__codelineno-15-3"></a><span class="w">    </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">mcp</span><span class="p">.</span><span class="n">ReadOnly</span><span class="p">)</span>
+<a href="#__codelineno-15-4" id="__codelineno-15-4" name="__codelineno-15-4"></a><span class="p">{</span>
+<a href="#__codelineno-15-5" id="__codelineno-15-5" name="__codelineno-15-5"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">Task</span><span class="p">.</span><span class="n">FromResult</span><span class="p">(</span><span class="n">PermissionDecision</span><span class="p">.</span><span class="n">ApproveOnce</span><span class="p">());</span>
+<a href="#__codelineno-15-6" id="__codelineno-15-6" name="__codelineno-15-6"></a><span class="p">}</span>
+</code></pre></div>
+<p>请将其视为纵深防御，而不是主要控制措施 — 类似于
+<a href="https://github.com/vicperdana/aigenius-copilotsdk-s5ep2/blob/main/src/AgentOrchestrator/samples/SdkLabs/PermissionsSample.cs">权限诊断</a>
+记录；当主机 CLI 已预先授予工具权限时，从未观察到钩子触发。 <code>Mode=ReadOnly</code> 连接才是有效的控制措施。</p>
+<h2 id="traps">⚠️ 常见陷阱<a class="headerlink" href="#traps" title="永久链接">¶</a></h2>
+<ul>
+<li><code>McpServers</code> 不是 <code>Dictionary&lt;string, object&gt;</code>。这是一个
+  <code>IDictionary&lt;string, McpServerConfig&gt;</code>，因此这个常见捷径会因以下编译错误而失败： <code>CS0266</code> ，因为无法转换值类型。</li>
+<li>Learn 服务器是通过网络访问。若无法连接，模型便没有 MCP 工具，而且可能悄悄使用自身知识作答。现在，除非示例观察到以下事件，否则会以非零状态结束： <code>ToolExecutionStartEvent</code>.</li>
+<li>MCP 服务器属于第三方代码，可能公开强大的能力。在将服务器加入处理实际工作的代理程序前，请先审查服务器本身、其权限与数据访问范围。</li>
+<li>stdio MCP 服务器绝不能将内容写入 stdout。请将所有记录导向 stderr，否则通信协议流会损坏，服务器看起来就像崩溃。</li>
+<li>只读 <em>提示</em> 不是唯读的 <em>保证</em>. <code>ReadOnly = true</code> 会告诉主机可以安全地自动批准；实际阻止写入的是
+  <code>AgentHQDemo.McpServer</code> 是 <code>Mode=ReadOnly</code> 连接字符串。</li>
+</ul>
+<h2 id="extra-credit">💡 加分练习<a class="headerlink" href="#extra-credit" title="永久链接">¶</a></h2>
+<p>基本执行成功后，请尝试以下其中一项：</p>
+<ul>
+<li>添加第二个 MCP 服务器，并比较模型在不同工具组之间的选择方式。</li>
+<li>将服务器名称新增至 <code>DisabledMcpServers</code>，请重新执行相同的提示，比较有无 Microsoft Learn 工具时的答案。</li>
+<li>探索相关的 SDK 设置，例如 <code>McpOAuthTokenStorage</code>,
+  <code>GitHubMcpToolConfig</code> 以及 <code>EnableMcpApps</code> ，适用于需要验证或更丰富 MCP 场景的情况。</li>
+</ul>
+<h2 id="checkpoint">✅ 检查点<a class="headerlink" href="#checkpoint" title="永久链接">¶</a></h2>
+<p>您现在可以说明：</p>
+<ul>
+<li>[x] 了解 MCP 与直接使用 C# 撰写工具的差异</li>
+<li>[x] 应何时使用 <code>McpHttpServerConfig</code> 与 <code>McpStdioServerConfig</code></li>
+<li>[x] 如何 <code>SessionConfig.McpServers</code> 将依名称连接服务器</li>
+<li>[x] 了解为何看似合理的答案，不能证明已调用MCP工具</li>
+<li>[x] 如何 <code>.vscode/mcp.json</code> ，而 SDK 设置也可以指向相同服务器</li>
+<li>[x] 了解此仓库为何 <em>提供</em> 除了使用 MCP 服务器之外，也能提供 MCP 服务器，以及为何 REST API 仍直接与数据库通信</li>
+<li>[x] 为何 <code>Mode=ReadOnly</code> 是真正的控制措施，而 <code>ReadOnly = true</code> 只是一个提示</li>
+</ul>
+<h2 id="related">相关内容<a class="headerlink" href="#related" title="永久链接">¶</a></h2>
+<ul>
+<li>上一步： <a href="../05-sessions/">实验 05 — 会话</a></li>
+<li>下一步： <a href="../07-wrap-up/">实验 07 — 总结</a></li>
+<li><a href="../../demos/01-copilot-sdk-integration/">演示：Copilot SDK 整合</a></li>
+<li><a href="../../breakouts/troubleshooting/">故障排除</a></li>
+</ul>
+</article>
+</div>
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+</div>
+<button class="md-top md-icon" data-md-component="top" hidden="" type="button">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"></path></svg>
+  返回顶部
+</button>
+</main>
+<footer class="md-footer">
+<div class="md-footer-meta md-typeset">
+<div class="md-footer-meta__inner md-grid">
+<div class="md-copyright">
+<div class="md-copyright__highlight">
+      代码采用 MIT 许可证 · 文档采用 CC BY 4.0 许可证
+    </div>
+  
+  
+    使用以下工具制作：
+    <a href="https://squidfunk.github.io/mkdocs-material/" rel="noopener" target="_blank">
+      Material for MkDocs
+    </a>
+</div>
+<div class="md-social">
+<a class="md-social__link" href="https://github.com/vicperdana/aigenius-copilotsdk-s5ep2" rel="noopener" target="_blank" title="仓库">
+<svg viewbox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"></path></svg>
+</a>
+</div>
+</div>
+</div>
+</footer>
+</div>
+<div class="md-dialog" data-md-component="dialog">
+<div class="md-dialog__inner md-typeset"></div>
+</div>
+<script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.top", "navigation.instant", "navigation.tracking", "navigation.indexes", "toc.follow", "content.code.copy", "content.code.annotate", "content.action.edit", "search.suggest", "search.highlight"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "已复制到剪贴板", "clipboard.copy": "复制到剪贴板", "search.result.more.one": "此页另有 1 条结果", "search.result.more.other": "此页另有 # 条结果", "search.result.none": "找不到匹配的文档", "search.result.one": "找到 1 份匹配的文档", "search.result.other": "找到 # 份匹配的文档", "search.result.placeholder": "输入文本以开始搜索", "search.result.term.missing": "缺少", "select.version": "选择版本"}, "version": null}</script>
+<script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,203 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "Agent HQ Demo — Retail Analytics Runtime",
+    "output": "map.html",
+    "quality_profile": "showcase",
+    "views": [
+      {
+        "id": "chat-request-path",
+        "label": "Chat request path",
+        "focus": ["user", "chatui", "api", "chatsvc", "cli", "model"],
+        "note": "Follow one chat message from the browser to the model and back as a streamed token response."
+      },
+      {
+        "id": "model-data-access",
+        "label": "How the model reads data",
+        "focus": ["cli", "mcp", "db"],
+        "note": "The model never touches SQLite directly; it calls five read-only MCP tools over stdio."
+      },
+      {
+        "id": "rest-and-persistence",
+        "label": "REST and persistence",
+        "focus": ["api", "analytics", "db"],
+        "note": "The application keeps its own read/write path to SQLite, separate from the model's."
+      }
+    ]
+  },
+  "components": [
+    {
+      "id": "user",
+      "type": "external",
+      "label": "Attendee",
+      "sublabel": "Browser",
+      "pos": [56, 162],
+      "size": [130, 64]
+    },
+    {
+      "id": "chatui",
+      "type": "frontend",
+      "label": "Chat UI",
+      "sublabel": "Blazor WASM · static JS",
+      "pos": [250, 150],
+      "size": [168, 84]
+    },
+    {
+      "id": "api",
+      "type": "backend",
+      "label": "Retail API",
+      "sublabel": "ASP.NET Core · FastAPI",
+      "pos": [508, 150],
+      "size": [168, 84]
+    },
+    {
+      "id": "analytics",
+      "type": "backend",
+      "label": "RetailAnalyticsService",
+      "sublabel": "EF Core · SQLModel",
+      "pos": [250, 350],
+      "size": [168, 84]
+    },
+    {
+      "id": "chatsvc",
+      "type": "backend",
+      "label": "CopilotChatService",
+      "sublabel": "singleton · SSE stream",
+      "pos": [508, 350],
+      "size": [168, 84]
+    },
+    {
+      "id": "cli",
+      "type": "external",
+      "label": "GitHub Copilot CLI",
+      "sublabel": "Copilot SDK · JSON-RPC",
+      "pos": [766, 350],
+      "size": [175, 84]
+    },
+    {
+      "id": "model",
+      "type": "cloud",
+      "label": "Model",
+      "sublabel": "claude-haiku-4.5 · gpt-5",
+      "pos": [1040, 350],
+      "size": [150, 84]
+    },
+    {
+      "id": "db",
+      "type": "database",
+      "label": "retail.db",
+      "sublabel": "SQLite · seeded on startup",
+      "pos": [250, 550],
+      "size": [168, 84]
+    },
+    {
+      "id": "mcp",
+      "type": "security",
+      "label": "retail-analytics MCP",
+      "sublabel": "stdio · 5 read-only tools",
+      "pos": [766, 550],
+      "size": [175, 84],
+      "tag": "mode=ro"
+    }
+  ],
+  "boundaries": [
+    {
+      "kind": "region",
+      "label": "Local developer machine",
+      "wraps": ["chatui", "api", "analytics", "chatsvc", "cli", "db", "mcp"]
+    }
+  ],
+  "connections": [
+    {
+      "id": "user-opens-ui",
+      "from": "user",
+      "to": "chatui",
+      "label": "localhost"
+    },
+    {
+      "id": "chat-post",
+      "from": "chatui",
+      "to": "api",
+      "label": "POST /api/chat",
+      "variant": "emphasis"
+    },
+    {
+      "id": "api-to-analytics",
+      "from": "api",
+      "to": "analytics",
+      "label": "query + seed"
+    },
+    {
+      "id": "analytics-sql",
+      "from": "analytics",
+      "to": "db",
+      "label": "read / write",
+      "labelDy": 24
+    },
+    {
+      "id": "api-to-chatsvc",
+      "from": "api",
+      "to": "chatsvc",
+      "label": "prompt + model id",
+      "labelDy": 24
+    },
+    {
+      "id": "chatsvc-to-cli",
+      "from": "chatsvc",
+      "to": "cli",
+      "label": "CreateSession",
+      "variant": "emphasis"
+    },
+    {
+      "id": "cli-to-model",
+      "from": "cli",
+      "to": "model",
+      "label": "streamed turn",
+      "variant": "emphasis"
+    },
+    {
+      "id": "cli-to-mcp",
+      "from": "cli",
+      "to": "mcp",
+      "label": "tool calls over stdio",
+      "labelDy": 24
+    },
+    {
+      "id": "mcp-read-only",
+      "from": "mcp",
+      "to": "db",
+      "label": "SELECT only",
+      "variant": "security"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "Chat request path",
+      "items": [
+        "Chat UI posts a prompt to /api/chat",
+        "CopilotChatService streams deltas back as SSE",
+        "Both tracks speak the same camelCase JSON contract"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "Two tracks, one shape",
+      "items": [
+        ".NET: API :5050 with a Blazor WebAssembly host on :5051",
+        "Python: FastAPI serves the API and the UI together on :5070",
+        "Mirrored domain tests and SDK labs in each track"
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "Least privilege for the model",
+      "items": [
+        "The app reads and writes through RetailAnalyticsService",
+        "The model only sees five read-only MCP tools, never raw SQL",
+        "SQLite mode=ro rejects a write at the driver, not just in code"
+      ]
+    }
+  ]
+}
