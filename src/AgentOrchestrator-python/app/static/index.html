@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <script>
+    (() => {
+      document.documentElement.setAttribute("data-theme", "light");
+    })();
+  </script>
+  <style>
+    :root {
+      color-scheme: light;
+      --cp-bg: #f7f4ef;
+      --cp-bg-elevated: #fcfbf8;
+      --cp-surface: #ffffff;
+      --cp-surface-soft: #f5f5f5;
+      --cp-border: #dedede;
+      --cp-border-strong: #919191;
+      --cp-text: #242424;
+      --cp-text-muted: #5c5c5c;
+      --cp-text-soft: #6f6f6f;
+      --cp-accent: #b11f4b;
+      --cp-accent-hover: #9a1a41;
+      --cp-accent-soft: rgba(177, 31, 75, 0.08);
+      --cp-accent-fg: #ffffff;
+      --cp-success: #16a34a;
+      --cp-danger: #dc2626;
+      --cp-warning: #f59e0b;
+      --cp-link: #0078d4;
+      --cp-shadow: 0 18px 48px rgba(0, 0, 0, 0.12);
+      --cp-overlay: rgba(255, 255, 255, 0.8);
+      --cp-panel: rgba(255, 255, 255, 0.86);
+      --cp-panel-strong: rgba(255, 255, 255, 0.96);
+      --cp-sheen: rgba(255, 255, 255, 0.55);
+      --cp-highlight: rgba(177, 31, 75, 0.12);
+    }
+    html[data-theme="dark"] {
+      color-scheme: dark;
+      --cp-bg: #3d3b3a;
+      --cp-bg-elevated: #343231;
+      --cp-surface: #292929;
+      --cp-surface-soft: #2e2e2e;
+      --cp-border: #474747;
+      --cp-border-strong: #5f5f5f;
+      --cp-text: #dedede;
+      --cp-text-muted: #919191;
+      --cp-text-soft: #b0b0b0;
+      --cp-accent: #fd8ea1;
+      --cp-accent-hover: #fb7b91;
+      --cp-accent-soft: rgba(253, 142, 161, 0.14);
+      --cp-accent-fg: #1a1a1a;
+      --cp-success: #4ade80;
+      --cp-danger: #f87171;
+      --cp-warning: #fbbf24;
+      --cp-link: #4da6ff;
+      --cp-shadow: 0 18px 48px rgba(0, 0, 0, 0.32);
+      --cp-overlay: rgba(41, 41, 41, 0.88);
+      --cp-panel: rgba(41, 41, 41, 0.72);
+      --cp-panel-strong: rgba(41, 41, 41, 0.96);
+      --cp-sheen: rgba(255, 255, 255, 0.04);
+      --cp-highlight: rgba(253, 142, 161, 0.12);
+    }
+  </style>
+  <title>零售分析助手</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <div class="teams-app">
+    <aside class="teams-rail" aria-label="Application navigation">
+      <div class="teams-logo" aria-hidden="true">RA</div>
+      <button class="rail-item active" type="button" aria-current="page">
+        <span class="rail-icon" aria-hidden="true">●</span>
+        <span id="nav-chat">聊天</span>
+      </button>
+      <button class="rail-item" type="button">
+        <span class="rail-icon" aria-hidden="true">▥</span>
+        <span id="nav-analytics">分析</span>
+      </button>
+    </aside>
+    <main class="chat-shell">
+    <header class="chat-header">
+      <div class="avatar" aria-hidden="true">RA</div>
+      <div class="contact">
+        <h1 id="contact-title">零售分析助手</h1>
+        <p><span class="online-dot"></span> <span id="assistant-status">Copilot 助手</span></p>
+      </div>
+      <label class="language-picker">
+        <span class="sr-only">语言</span>
+        <select id="language" aria-label="选择语言">
+          <option value="zh-CN" selected>简体中文</option>
+          <option value="zh-TW">繁體中文</option>
+          <option value="en">English</option>
+        </select>
+      </label>
+    </header>
+
+    <section id="messages" class="messages" aria-live="polite">
+      <div class="date-divider"><span id="today-label">今天</span></div>
+      <article class="message-row assistant-row">
+        <div class="message-bubble assistant-bubble welcome-bubble">
+          <p id="welcome-author" class="message-author">零售分析助手</p>
+          <p id="welcome-text">你好！我可以协助你分析客户交易、客户分群、留存率和零售 KPI。</p>
+          <p id="suggestion-title" class="suggestion-title">你可以这样问：</p>
+          <div id="suggestions" class="suggestions" aria-label="推荐问题">
+            <button type="button" data-suggestion-index="0" data-prompt="客户 C003 的总消费金额是多少？属于哪个客户分群？">
+              C003 的总消费和客户分群是什么？
+            </button>
+            <button type="button" data-suggestion-index="1" data-prompt="哪个客户分群的留存率最低？">
+              哪个客户分群的留存率最低？
+            </button>
+            <button type="button" data-suggestion-index="2" data-prompt="显示客户 C003 最近的购买记录和商品类别。">
+              查看 C003 最近的购买记录
+            </button>
+            <button type="button" data-suggestion-index="3" data-prompt="比较所有客户分群的留存率。">
+              比较各客户分群的留存率
+            </button>
+            <button type="button" data-suggestion-index="4" data-prompt="列出三个重要的零售 KPI，每行一个。">
+              列出三个重要的零售 KPI
+            </button>
+          </div>
+          <time id="now-label" class="message-time">现在</time>
+        </div>
+      </article>
+    </section>
+
+    <form id="chat-form" class="composer">
+      <div class="composer-main">
+        <label class="prompt-wrap">
+          <span id="prompt-label" class="sr-only">消息</span>
+          <textarea
+            id="prompt"
+            rows="1"
+            placeholder="输入消息"
+            enterkeyhint="send"
+            required
+          ></textarea>
+        </label>
+        <div id="model-status" class="model-status" role="status">
+          正在连接可用模型...
+        </div>
+      </div>
+      <label class="model-picker">
+        <span id="model-label" class="sr-only">模型</span>
+        <select id="model" aria-label="选择模型">
+          <option value="gpt-6-astra" selected>GPT-6 Astra</option>
+        </select>
+      </label>
+      <button id="send-button" class="send-button" type="submit" aria-label="发送消息">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M3.4 20.4 21.8 12 3.4 3.6l.1 6.5 12.8 1.9-12.8 1.9-.1 6.5Z"/>
+        </svg>
+      </button>
+    </form>
+    </main>
+  </div>
+  <script src="/static/app.js"></script>
+</body>
+</html>
