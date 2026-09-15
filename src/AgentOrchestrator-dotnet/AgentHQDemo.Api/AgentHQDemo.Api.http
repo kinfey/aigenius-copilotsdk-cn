@@ -1,0 +1,20 @@
+@host = http://localhost:5050
+
+GET {{host}}/api/chat/models
+Accept: application/json
+
+###
+GET {{host}}/api/transactions?customerId=C003
+Accept: application/json
+
+###
+GET {{host}}/api/segments/predict/C003
+Accept: application/json
+
+###
+POST {{host}}/api/chat/stream
+Content-Type: application/json
+
+{
+  "prompt": "What is customer C003 total spend and which segment are they in?"
+}

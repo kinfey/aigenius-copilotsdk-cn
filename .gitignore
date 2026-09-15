@@ -1,2 +1,4 @@
 .DS_Store
 .translation_work/
+**/bin/
+**/obj/

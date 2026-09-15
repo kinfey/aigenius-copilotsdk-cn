@@ -1,0 +1,134 @@
+@page "/"
+@using AgentHQDemo.Web.Services
+@using AgentHQDemo.Web.Shared
+@implements IAsyncDisposable
+@inject ChatApi Api
+@inject BrowserStorage Storage
+
+<PageTitle>@Text.Title</PageTitle>
+
+<div class="teams-app">
+    <aside class="teams-rail" aria-label="Application navigation">
+        <div class="teams-logo" aria-hidden="true">RA</div>
+        <button class="rail-item active" type="button" aria-current="page">
+            <span class="rail-icon" aria-hidden="true">●</span>
+            <span id="nav-chat">@Text.NavChat</span>
+        </button>
+        <button class="rail-item" type="button">
+            <span class="rail-icon" aria-hidden="true">▥</span>
+            <span id="nav-analytics">@Text.NavAnalytics</span>
+        </button>
+    </aside>
+    <main class="chat-shell">
+        <header class="chat-header">
+            <div class="avatar" aria-hidden="true">RA</div>
+            <div class="contact">
+                <h1 id="contact-title">@Text.Title</h1>
+                <p><span class="online-dot"></span> <span id="assistant-status">@Text.AssistantStatus</span></p>
+            </div>
+            <label class="language-picker">
+                <span class="sr-only">@Text.Language</span>
+                <select id="language" aria-label="@Text.ChooseLanguage" value="@language" @onchange="ChangeLanguageAsync">
+                    <option value="zh-CN">简体中文</option>
+                    <option value="zh-TW">繁體中文</option>
+                    <option value="en">English</option>
+                </select>
+            </label>
+        </header>
+
+        <section id="messages" class="messages" aria-live="polite">
+            <div class="date-divider"><span id="today-label">@Text.Today</span></div>
+            <article class="message-row assistant-row">
+                <div class="message-bubble assistant-bubble welcome-bubble">
+                    <p id="welcome-author" class="message-author">@Text.Title</p>
+                    <p id="welcome-text">@Text.Welcome</p>
+                    <p id="suggestion-title" class="suggestion-title">@Text.SuggestionTitle</p>
+                    <div id="suggestions" class="suggestions" aria-label="@Text.SuggestionTitle">
+                        @for (var index = 0; index < Text.Suggestions.Length; index++)
+                        {
+                            var suggestion = Text.Suggestions[index];
+                            <button type="button" data-suggestion-index="@index" data-prompt="@suggestion.Prompt" @onclick="() => UseSuggestionAsync(suggestion.Prompt)">@suggestion.Label</button>
+                        }
+                    </div>
+                    <time id="now-label" class="message-time">@Text.Now</time>
+                </div>
+            </article>
+            @foreach (var entry in state.Messages)
+            {
+                var pending = busy && ReferenceEquals(entry, activeReply) && entry.Content.Length == 0;
+                <article @key="entry" class="message-row @(entry.Role)-row">
+                    <div class="message-bubble @(entry.Role)-bubble @(pending ? "pending-bubble" : "")">
+                        <div class="message-content">@if (pending)
+                            {
+                                <span class="typing" aria-label="@Text.Typing">
+                                    <span class="typing-label">@Text.Typing</span>
+                                    <span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span>
+                                </span>
+                            }
+                            else if (entry.Role == "assistant")
+                            {
+                                <MarkdownMessage Content="@entry.Content" />
+                            }
+                            else
+                            {
+                                @entry.Content
+                            }</div>
+                        <time class="message-time" datetime="@entry.CreatedAt.ToString("O")">@MessageTime(entry)</time>
+                        @if (!busy && entry.Status.StartsWith("已停止", StringComparison.Ordinal))
+                        {
+                            <span class="sr-only">@entry.Status</span>
+                        }
+                    </div>
+                </article>
+            }
+            @if (!string.IsNullOrEmpty(modelError))
+            {
+                <div class="alert error" role="alert">@Text.ModelFailure @modelError <button type="button" @onclick="LoadModelsAsync" disabled="@(busy || loadingModels || !initialized)">@Text.Retry</button></div>
+            }
+            @if (!string.IsNullOrEmpty(storageError))
+            {
+                <div class="alert warning" role="status">@storageError</div>
+            }
+            @if (!string.IsNullOrEmpty(chatError))
+            {
+                <div class="alert error" role="alert">@chatError</div>
+            }
+        </section>
+
+        <form id="chat-form" class="composer" @onsubmit="SendAsync" @onsubmit:preventDefault>
+            <div class="composer-main">
+                <label class="prompt-wrap">
+                    <span id="prompt-label" class="sr-only">@Text.Message</span>
+                    <textarea id="prompt" rows="1" placeholder="@Text.Placeholder" enterkeyhint="send" required maxlength="12000"
+                              @bind="prompt" @bind:event="oninput"></textarea>
+                </label>
+                <div id="model-status" class="model-status" role="status">@ModelStatus</div>
+            </div>
+            <label class="model-picker">
+                <span id="model-label" class="sr-only">@Text.Model</span>
+                <select id="model" aria-label="@Text.ChooseModel" value="@state.Model" @onchange="ChangeModelAsync" disabled="@(busy || loadingModels || models.Count == 0)">
+                    @if (models.Count == 0)
+                    {
+                        <option value="">@(loadingModels ? "GPT-6 Astra" : Text.NoModels)</option>
+                    }
+                    @foreach (var model in models)
+                    {
+                        <option value="@model.Id">@(string.IsNullOrWhiteSpace(model.Name) ? model.Id : model.Name)</option>
+                    }
+                </select>
+            </label>
+            @if (busy)
+            {
+                <button id="stop-button" class="send-button" type="button" @onclick="Stop" aria-label="@Text.Stop" title="@Text.Stop">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6h12v12H6z" /></svg>
+                </button>
+            }
+            else
+            {
+                <button id="send-button" class="send-button" type="submit" aria-label="@Text.Send" disabled="@(!ModelsReady)">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.4 20.4 21.8 12 3.4 3.6l.1 6.5 12.8 1.9-12.8 1.9-.1 6.5Z" /></svg>
+                </button>
+            }
+        </form>
+    </main>
+</div>

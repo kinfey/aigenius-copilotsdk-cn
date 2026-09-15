@@ -1,0 +1,12 @@
+<Solution>
+  <Folder Name="/samples/">
+    <Project Path="samples/SdkLabs/SdkLabs.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/AgentHQDemo.Tests/AgentHQDemo.Tests.csproj" />
+  </Folder>
+  <Project Path="AgentHQDemo.Api/AgentHQDemo.Api.csproj" />
+  <Project Path="AgentHQDemo.Core/AgentHQDemo.Core.csproj" />
+  <Project Path="AgentHQDemo.McpServer/AgentHQDemo.McpServer.csproj" />
+  <Project Path="AgentHQDemo.Web/AgentHQDemo.Web.csproj" />
+</Solution>
